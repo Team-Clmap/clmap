@@ -1,8 +1,9 @@
+@import url("https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css");
+
 body {
   font-family: "NanumSquare", sans-serif;
   width: 100%;
   box-sizing: border-box;
-  margin: 30px;
 }
 
 a {
