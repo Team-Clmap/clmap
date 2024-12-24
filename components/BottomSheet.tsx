@@ -12,6 +12,10 @@ type BottomSheetProps = {
   buttonName?: string;
 };
 
+type childProps = {
+  isFormValid?: boolean;
+};
+
 const slideUp = keyframes`
   from {
     transform: translateY(100%);
@@ -21,11 +25,12 @@ const slideUp = keyframes`
   }
 `;
 
-const BottomSheet: React.FC<BottomSheetProps> = ({
+const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
   isOpen,
   onClose,
   children,
   buttonName = "닫기",
+  isFormValid = true,
 }) => {
   const [height, setHeight] = useState(300); // 300, 560, 822
   const sheetRef = useRef<HTMLDivElement>(null);
@@ -78,15 +83,13 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
 
   const sheetStyle = css`
     position: relative;
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     height: ${height}px;
     border-radius: 10px 10px 0 0;
     padding: 20px 30px 24px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 
     background: #ffffff;
     transition: height 0.2s;
@@ -109,7 +112,6 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
 
   const contentsStyle = css`
     position: relative;
-
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -120,17 +122,16 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   const buttonStyle = css`
     position: fixed;
     bottom: 24px;
-
     width: calc(100% - 60px);
     height: 72px;
     border: none;
     border-radius: 10px;
 
-    background: #83bbff; // [TODO] disable 처리
     color: #ffffff;
     font-size: 22px;
     font-weight: bold;
-    cursor: pointer;
+    background-color: ${isFormValid ? "#83bbff" : "#b0b0b0"};
+    cursor: ${isFormValid ? "pointer" : "auto"};
   `;
 
   return (
@@ -142,8 +143,12 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
       <div css={sheetStyle}>
         <div css={handleBarStyle} onTouchStart={handleTouchStart} />
         <div css={contentsStyle}>
-          {children}
-          <button css={buttonStyle} onClick={onClose}>
+          {React.Children.map(children, (child) =>
+            React.isValidElement<childProps>(child)
+              ? React.cloneElement(child, { isFormValid })
+              : child
+          )}
+          <button css={buttonStyle} onClick={onClose} disabled={!isFormValid}>
             {buttonName}
           </button>
         </div>

@@ -8,6 +8,12 @@ import BottomSheet from "../components/BottomSheet";
 
 const Page = () => {
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
+  const [isFormValid, setFormValid] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isValidInput = e.target.value.trim() != "";
+    setFormValid(isValidInput);
+  };
 
   const buttonStyle = css`
     padding: 8px 16px;
@@ -28,7 +34,11 @@ const Page = () => {
       <BottomSheet
         isOpen={isBottomSheetOpen}
         onClose={() => setBottomSheetOpen(false)}
+        isFormValid={isFormValid}
       >
+        <form>
+          <input type="text" onChange={handleInputChange} />
+        </form>
         <p>
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
