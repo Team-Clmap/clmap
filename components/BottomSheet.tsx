@@ -9,11 +9,12 @@ type BottomSheetProps = {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
+  size: "small" | "medium" | "large";
   buttonName?: string;
 };
 
 type childProps = {
-  isFormValid?: boolean;
+  $isFormValid?: boolean;
 };
 
 const slideUp = keyframes`
@@ -29,10 +30,12 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
   isOpen,
   onClose,
   children,
+  size,
   buttonName = "닫기",
-  isFormValid = true,
+  $isFormValid = true,
 }) => {
-  const [height, setHeight] = useState(300); // 300, 560, 822
+  const defaultHeight = size === "small" ? 300 : size === "medium" ? 560 : 822;
+  const [height, setHeight] = useState(defaultHeight - 44);
   const sheetRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
   const startY = useRef(0);
@@ -130,8 +133,8 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
     color: #ffffff;
     font-size: 22px;
     font-weight: bold;
-    background-color: ${isFormValid ? "#83bbff" : "#b0b0b0"};
-    cursor: ${isFormValid ? "pointer" : "auto"};
+    background-color: ${$isFormValid ? "#83bbff" : "#b0b0b0"};
+    cursor: ${$isFormValid ? "pointer" : "auto"};
   `;
 
   return (
@@ -145,10 +148,10 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
         <div css={contentsStyle}>
           {React.Children.map(children, (child) =>
             React.isValidElement<childProps>(child)
-              ? React.cloneElement(child, { isFormValid })
+              ? React.cloneElement(child, { $isFormValid })
               : child
           )}
-          <button css={buttonStyle} onClick={onClose} disabled={!isFormValid}>
+          <button css={buttonStyle} onClick={onClose} disabled={!$isFormValid}>
             {buttonName}
           </button>
         </div>

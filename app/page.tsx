@@ -32,9 +32,10 @@ const Page = () => {
         버튼하기
       </button>
       <BottomSheet
+        size="small"
         isOpen={isBottomSheetOpen}
         onClose={() => setBottomSheetOpen(false)}
-        isFormValid={isFormValid}
+        $isFormValid={isFormValid}
       >
         <form>
           <input type="text" onChange={handleInputChange} />
