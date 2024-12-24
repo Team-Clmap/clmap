@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { ReactNode, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { css, keyframes } from "@emotion/react";
 
 type BottomSheetProps = {
@@ -52,7 +52,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     document.body.style.cursor = "";
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener("touchmove", handleTouchMove);
     document.addEventListener("touchend", handleTouchEnd);
 
@@ -80,18 +80,16 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     position: relative;
 
     width: 100%;
-    max-width: 440px;
     height: ${height}px;
     border-radius: 10px 10px 0 0;
-    padding: 0 30px;
+    padding: 20px 30px 24px;
 
     display: flex;
     flex-direction: column;
-    gap: 10px;
     align-items: center;
 
     background: #ffffff;
-    transition: height 0.2s; // ?
+    transition: height 0.2s;
     animation: ${isOpen
       ? css`
           ${slideUp} 0.3s ease-in-out
@@ -100,25 +98,33 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   `;
 
   const handleBarStyle = css`
-    position: absolute;
-    top: 20px;
-
     width: 60px;
     height: 8px;
     border-radius: 20px;
-    background-color: #d6d6d6;
+    margin-bottom: 20px;
 
+    background-color: #d6d6d6;
     cursor: ns-resize;
   `;
 
-  const buttonStyle = css`
-    position: absolute;
-    bottom: 24px;
+  const contentsStyle = css`
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
     width: 100%;
+    height: calc(100% - 24px);
+    overflow-y: auto;
+  `;
+
+  const buttonStyle = css`
+    position: fixed;
+    bottom: 24px;
+
+    width: calc(100% - 60px);
     height: 72px;
     border: none;
     border-radius: 10px;
-    align-items: center;
 
     background: #83bbff; // [TODO] disable 처리
     color: #ffffff;
@@ -135,10 +141,12 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     >
       <div css={sheetStyle}>
         <div css={handleBarStyle} onTouchStart={handleTouchStart} />
-        {children}
-        <button css={buttonStyle} onClick={onClose}>
-          {buttonName}
-        </button>
+        <div css={contentsStyle}>
+          {children}
+          <button css={buttonStyle} onClick={onClose}>
+            {buttonName}
+          </button>
+        </div>
       </div>
     </div>
   );
