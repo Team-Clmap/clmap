@@ -110,6 +110,8 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
   `;
 
   const handleBarStyle = css`
+    position: relative;
+
     width: 60px;
     height: 8px;
     border-radius: 20px;
@@ -117,6 +119,15 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
 
     background-color: #d6d6d6;
     cursor: ns-resize;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: -190px;
+      right: -190px;
+      bottom: -20px;
+    }
   `;
 
   const contentStyle = css`
