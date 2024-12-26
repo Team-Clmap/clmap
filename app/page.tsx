@@ -35,7 +35,7 @@ const Page = () => {
         size="small"
         isOpen={isBottomSheetOpen}
         onClose={() => setBottomSheetOpen(false)}
-        $isFormValid={isFormValid}
+        isFormValid={isFormValid}
       >
         <form>
           <input type="text" onChange={handleInputChange} />

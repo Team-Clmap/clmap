@@ -14,7 +14,7 @@ type BottomSheetProps = {
 };
 
 type childProps = {
-  $isFormValid?: boolean;
+  isFormValid?: boolean;
 };
 
 const slideUp = keyframes`
@@ -32,7 +32,7 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
   children,
   size,
   buttonName = "닫기",
-  $isFormValid = true,
+  isFormValid,
 }) => {
   const defaultHeight = size === "small" ? 300 : size === "medium" ? 560 : 822;
   const [height, setHeight] = useState(defaultHeight - 44);
@@ -42,16 +42,18 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
 
   const handleTouchStart = (e: React.TouchEvent) => {
     isDragging.current = true;
-    startY.current = e.touches[0].clientY;
+    startY.current = e.touches[0].clientY; // 터치를 시작한 Y좌표
     document.body.style.cursor = "ns-resize";
   };
 
   const handleTouchMove = (e: TouchEvent) => {
     if (isDragging.current) {
-      const delta = startY.current - e.touches[0].clientY; // 이동한 거리
+      const delta = startY.current - e.touches[0].clientY; // 이동 거리 계산
+
       const newHeight = Math.max(100, height - delta); // 최소 높이 100
-      setHeight(newHeight); // 상태 업데이트
-      startY.current = e.touches[0].clientY; // 위치 갱신
+
+      setHeight(newHeight); // 높이 업데이트
+      startY.current = e.touches[0].clientY; // 기준 위치 갱신
     }
   };
 
@@ -133,8 +135,8 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
     color: #ffffff;
     font-size: 22px;
     font-weight: bold;
-    background-color: ${$isFormValid ? "#83bbff" : "#b0b0b0"};
-    cursor: ${$isFormValid ? "pointer" : "auto"};
+    background-color: ${isFormValid ? "#83bbff" : "#b0b0b0"};
+    cursor: ${isFormValid ? "pointer" : "auto"};
   `;
 
   return (
@@ -147,11 +149,12 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
         <div css={handleBarStyle} onTouchStart={handleTouchStart} />
         <div css={contentsStyle}>
           {React.Children.map(children, (child) =>
-            React.isValidElement<childProps>(child)
-              ? React.cloneElement(child, { $isFormValid })
+            React.isValidElement<childProps>(child) &&
+            typeof child.type !== "string" // [Unknown Prop Warning] DOM 요소가 아닌 경우에만 전달
+              ? React.cloneElement(child, { isFormValid })
               : child
           )}
-          <button css={buttonStyle} onClick={onClose} disabled={!$isFormValid}>
+          <button css={buttonStyle} onClick={onClose} disabled={!isFormValid}>
             {buttonName}
           </button>
         </div>
