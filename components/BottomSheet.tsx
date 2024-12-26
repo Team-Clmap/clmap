@@ -34,7 +34,7 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
   buttonName = "닫기",
   isFormValid,
 }) => {
-  const defaultHeight = size === "small" ? 300 : size === "medium" ? 560 : 822;
+  const defaultHeight = size === "small" ? 256 : size === "medium" ? 516 : 778;
   const [height, setHeight] = useState(defaultHeight - 44);
   const sheetRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
@@ -42,18 +42,22 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
 
   const handleTouchStart = (e: React.TouchEvent) => {
     isDragging.current = true;
-    startY.current = e.touches[0].clientY; // 터치를 시작한 Y좌표
+    startY.current = e.touches[0].clientY;
     document.body.style.cursor = "ns-resize";
   };
 
   const handleTouchMove = (e: TouchEvent) => {
     if (isDragging.current) {
-      const delta = startY.current - e.touches[0].clientY; // 이동 거리 계산
+      const delta = startY.current - e.touches[0].clientY;
+      const maxHeight = 778;
+      const minHeight = 256;
 
-      const newHeight = Math.max(100, height - delta); // 최소 높이 100
-
-      setHeight(newHeight); // 높이 업데이트
-      startY.current = e.touches[0].clientY; // 기준 위치 갱신
+      const newHeight = Math.min(
+        maxHeight,
+        Math.max(minHeight, height + delta)
+      );
+      setHeight(newHeight);
+      startY.current = e.touches[0].clientY;
     }
   };
 
@@ -70,7 +74,7 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
       document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleTouchEnd);
     };
-  }, []);
+  }, [height]);
 
   const scrimStyle = css`
     position: fixed;
@@ -115,7 +119,7 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
     cursor: ns-resize;
   `;
 
-  const contentsStyle = css`
+  const contentStyle = css`
     position: relative;
     display: flex;
     flex-direction: column;
@@ -147,7 +151,7 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
     >
       <div css={sheetStyle}>
         <div css={handleBarStyle} onTouchStart={handleTouchStart} />
-        <div css={contentsStyle}>
+        <div css={contentStyle}>
           {React.Children.map(children, (child) =>
             React.isValidElement<childProps>(child) &&
             typeof child.type !== "string" // [Unknown Prop Warning] DOM 요소가 아닌 경우에만 전달
