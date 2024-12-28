@@ -1,5 +1,6 @@
 "use client";
 
+import GradeInput from "@/components/GradeInput";
 import Input from "@/components/Input";
 import { useState } from "react";
 
@@ -34,6 +35,7 @@ export default function HomePage() {
         onChange={handleChange}
         isValid={isValid}
       />
+      <GradeInput onChange={handleChange} />
       <button onClick={handleSubmit}>확인</button>
     </>
   );

@@ -12,7 +12,6 @@ type InputProps = {
   isValid?: boolean;
 };
 
-// [TODO] GradeInput.tsx 제작
 const Input: React.FC<InputProps> = ({
   size,
   align = "left",
@@ -31,17 +30,13 @@ const Input: React.FC<InputProps> = ({
   };
 
   const inputStyle = css`
-    outline: none;
-
-    display: flex;
-    gap: 8px;
-
     align-items: center;
     justify-content: ${align};
     padding: 12px 14px;
     width: ${size === "small" ? "90px" : "100%"};
     height: 44px;
 
+    outline: none;
     border: 1px solid ${isValid ? "#d6d6d6" : "#ff3b30"};
     border-radius: 10px;
     font-size: 18px;
@@ -53,7 +48,6 @@ const Input: React.FC<InputProps> = ({
 
   const textareaStyle = css`
     ${inputStyle};
-    outline: none;
     resize: none;
     height: 102px;
   `;
