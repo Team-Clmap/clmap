@@ -29,8 +29,8 @@ const nanumsquare = localFont({
       style: "light",
     },
   ],
-  display: "swap", // 로드 중에도 텍스트가 표시되도록 설정
-  variable: "--font-nanumsquare", // 전역 CSS 변수 생성
+  display: "swap",
+  variable: "--font-nanumsquare",
 });
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -38,6 +38,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <title>Clmap</title>
       <body className={nanumsquare.className}>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
         <QueryClientProvider client={queryClient}>
           {children}
         </QueryClientProvider>

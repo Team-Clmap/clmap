@@ -2,58 +2,42 @@
 
 "use client";
 
-import React, { useState } from "react";
+import Popup from "@/components/Popup";
 import { css } from "@emotion/react";
-import BottomSheet from "../components/BottomSheet";
+import { useState } from "react";
 
-const Page = () => {
-  const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
-  const [isFormValid, setFormValid] = useState(false);
+export default function HomePage() {
+  const [isPopupOpen, setPopupOpen] = useState(false);
+  const handleButtonClick = () => {
+    setPopupOpen(false);
+  };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isValidInput = e.target.value.trim() != "";
-    setFormValid(isValidInput);
+  const handleLeftButtonClick = () => {
+    setPopupOpen(false);
   };
 
   const buttonStyle = css`
-    padding: 8px 16px;
-    background: #83bbff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s ease;
+    width: 100px;
+    height: 40px;
   `;
 
   return (
-    <div>
-      <button css={buttonStyle} onClick={() => setBottomSheetOpen(true)}>
-        버튼하기
+    <>
+      <h1>Hello Clmap</h1>
+      <button css={buttonStyle} onClick={() => setPopupOpen(true)}>
+        팝업나와
       </button>
-      <BottomSheet
-        size="small"
-        isOpen={isBottomSheetOpen}
-        onClose={() => setBottomSheetOpen(false)}
-        isFormValid={isFormValid}
+      <Popup
+        isOpen={isPopupOpen}
+        title="팝업제목"
+        description="팝업입니다 근데 사실은 팝업이고 어떻게보면 팝업이지요 이정도면 됐겠지요"
+        leftButtonName="취소"
+        buttonName="저장"
+        onClickButton={handleButtonClick}
+        onClickLeft={handleLeftButtonClick}
       >
-        <form>
-          <input type="text" onChange={handleInputChange} />
-        </form>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with
-          the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker
-          including versions of Lorem Ipsum.
-        </p>
-      </BottomSheet>
-    </div>
+        <input />
+      </Popup>
+    </>
   );
-};
-
-export default Page;
+}
