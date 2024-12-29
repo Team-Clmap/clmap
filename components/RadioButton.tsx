@@ -18,11 +18,9 @@ const RadioButton: React.FC<RadioButtonType> = ({
   onChange,
 }) => {
   const radioBoxStyle = css`
-    background-color: aquamarine;
-    align-content: center;
     width: fit-content;
   `;
-
+  
   const radioButtonStyle = css`
     appearance: none;
     width: 20px;
@@ -31,6 +29,7 @@ const RadioButton: React.FC<RadioButtonType> = ({
     border: 2px solid #83bbff;
     border-radius: 50%;
     position: relative;
+    vertical-align: middle;
 
     &:checked::after {
       content: "";
@@ -46,9 +45,8 @@ const RadioButton: React.FC<RadioButtonType> = ({
   `;
 
   const labelStyle = css`
-    background-color: red;
+    vertical-align: middle;
     font-size: 18px;
-    line-height: 20px;
     cursor: pointer;
   `;
 
