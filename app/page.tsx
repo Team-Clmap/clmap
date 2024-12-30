@@ -1,4 +1,4 @@
-/** @jsxImportSource @emotion/react */
+/** @JSXImportSource @emotion/react **/
 
 "use client";
 

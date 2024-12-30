@@ -2,9 +2,31 @@
   font-family: "NanumSquare", sans-serif;
   box-sizing: border-box;
   width: 100%;
+  padding: 0;
   margin: 0;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+ul,
+ol {
+  list-style: none;
 }
 
 a {
   text-decoration: none;
+  color: inherit;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
 }
