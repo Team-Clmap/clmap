@@ -12,18 +12,10 @@ export default function HomePage() {
     setDate(value);
   };
 
-  const handleIconClick = () => {
-    alert("달력 아이콘 클릭됨!");
-  };
   return (
     <>
       <h1>Hello Clmap</h1>
-      <DatePicker
-        size="large"
-        value={date}
-        onChange={handleDateChange}
-        onClick={handleIconClick}
-      />
+      <DatePicker size="large" value={date} onChange={handleDateChange} />
     </>
   );
 }

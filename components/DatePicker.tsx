@@ -1,20 +1,26 @@
 /** @JSXImportSource @emotion/react **/
 
 import { css } from "@emotion/react";
+import { useState } from "react";
+import Calendar from "./Calendar";
+import Scrim from "./Scrim";
 
 type DatePickerProps = {
   size: "medium" | "large";
   value: string;
   onChange: (value: string) => void;
-  onClick: () => void;
 };
 
-const DatePicker: React.FC<DatePickerProps> = ({
-  size,
-  value,
-  onChange,
-  onClick,
-}) => {
+const DatePicker: React.FC<DatePickerProps> = ({ size, value, onChange }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
   const datePickerStyle = css`
     display: flex;
     align-items: center;
@@ -39,6 +45,16 @@ const DatePicker: React.FC<DatePickerProps> = ({
     width: 18px;
     height: 18px;
     cursor: pointer;
+    position: relative;
+
+    &::before {
+      position: absolute;
+      content: "";
+      top: -50%;
+      left: -50%;
+      right: -50%;
+      bottom: -50%;
+    }
   `;
 
   return (
@@ -46,12 +62,19 @@ const DatePicker: React.FC<DatePickerProps> = ({
       <input
         css={datePickerInputStyle}
         value={value}
+        onClick={handleOpen}
         onChange={(e) => onChange(e.target.value)}
         placeholder="날짜를 선택해주세요."
+        readOnly
       />
-      <div css={calendarIconStyle}>
+      <div css={calendarIconStyle} onClick={handleOpen}>
         <img src="/icons/calendar.png" alt="날짜선택" />
       </div>
+      {isOpen && (
+        <Scrim align="center" onClose={handleClose}>
+          <Calendar onDateSelect={onChange} />
+        </Scrim>
+      )}
     </div>
   );
 };

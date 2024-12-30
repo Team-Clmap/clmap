@@ -4,10 +4,8 @@
 
 import { css } from "@emotion/react";
 import { ReactNode } from "react";
-import Scrim from "./Scrim";
 
 type PopupProps = {
-  isOpen: boolean;
   title: string;
   buttonName: string;
   onClickButton: () => void;
@@ -18,7 +16,6 @@ type PopupProps = {
 };
 
 const Popup: React.FC<PopupProps> = ({
-  isOpen,
   title,
   buttonName,
   onClickButton,
@@ -35,7 +32,7 @@ const Popup: React.FC<PopupProps> = ({
     justify-content: center;
     text-align: center;
 
-    width: calc(100% - 60px);
+    width: calc(100vw - 60px);
     padding: 30px 22px 20px;
 
     background-color: #ffffff;
@@ -80,23 +77,21 @@ const Popup: React.FC<PopupProps> = ({
   `;
 
   return (
-    <Scrim isOpen={isOpen} align="center">
-      <div css={popupStyle}>
-        <div css={titleStyle}>{title}</div>
-        <div css={descriptionStyle}>{description}</div>
-        {children}
-        <div css={buttonsStyle}>
-          {leftButtonName && (
-            <button css={leftButtonStyle} onClick={onClickLeft}>
-              {leftButtonName}
-            </button>
-          )}
-          <button css={buttonStyle} onClick={onClickButton}>
-            {buttonName}
+    <div css={popupStyle}>
+      <div css={titleStyle}>{title}</div>
+      <div css={descriptionStyle}>{description}</div>
+      {children}
+      <div css={buttonsStyle}>
+        {leftButtonName && (
+          <button css={leftButtonStyle} onClick={onClickLeft}>
+            {leftButtonName}
           </button>
-        </div>
+        )}
+        <button css={buttonStyle} onClick={onClickButton}>
+          {buttonName}
+        </button>
       </div>
-    </Scrim>
+    </div>
   );
 };
 
