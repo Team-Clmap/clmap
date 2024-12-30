@@ -67,13 +67,13 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <div css={headerStyle}>
       {isBackEnabled && (
-        <button css={backButtonStyle} onClick={() => navigateTo(`${backPath}`)}>
+        <div css={backButtonStyle} onClick={() => navigateTo(`${backPath}`)}>
           <img
             css={backButtonStyle}
             src="/icons/arrow-left.png"
             alt="뒤로가기"
           />
-        </button>
+        </div>
       )}
       <div css={titleStyle}>{title}</div>
     </div>

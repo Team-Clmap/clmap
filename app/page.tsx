@@ -2,35 +2,31 @@
 
 "use client";
 
-import RadioButton from "@/components/RadioButton";
 import { useState } from "react";
+import SearchField from "@/components/SearchField";
 
 export default function HomePage() {
-  const [selectedValue, setSelectedValue] = useState("latest");
+  const [searchValue, setSearchValue] = useState("");
 
-  const handleRadioChange = (value: string) => {
-    setSelectedValue(value);
+  const handleSearchChange = (value: string) => {
+    console.log("입력중: ", value);
+    setSearchValue(value);
+  };
+
+  const handleSearchSubmit = (value: string) => {
+    console.log("검색할 암장: ", value);
   };
 
   return (
     <>
       <h1>Hello Clmap</h1>
-      <div css={{ display: "flex", gap: "20px" }}>
-        <RadioButton
-          label="최신순"
-          name="filter"
-          value="latest"
-          checked={selectedValue === "latest"}
-          onChange={handleRadioChange}
-        />
-        <RadioButton
-          label="오래된순"
-          name="filter"
-          value="oldest"
-          checked={selectedValue === "oldest"}
-          onChange={handleRadioChange}
-        />
-      </div>
+      <SearchField
+        size="small"
+        placeholder="암장 이름을 검색해보세요."
+        value={searchValue}
+        onSearch={handleSearchSubmit}
+        onChange={handleSearchChange}
+      />
     </>
   );
 }
