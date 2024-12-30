@@ -1,43 +1,42 @@
-/** @jsxImportSource @emotion/react */
-
 "use client";
 
-import Popup from "@/components/Popup";
-import { css } from "@emotion/react";
+import GradeInput from "@/components/GradeInput";
+import Input from "@/components/Input";
 import { useState } from "react";
 
 export default function HomePage() {
-  const [isPopupOpen, setPopupOpen] = useState(false);
-  const handleButtonClick = () => {
-    setPopupOpen(false);
+  const [isValid, setIsValid] = useState(true);
+  const [inputValue, setInputValue] = useState("");
+
+  const validateInput = (value: string) => {
+    return value.trim() != "";
   };
 
-  const handleLeftButtonClick = () => {
-    setPopupOpen(false);
+  const handleSubmit = () => {
+    const isValidInput = validateInput(inputValue);
+    setIsValid(isValidInput);
+
+    if (!isValidInput) {
+      console.log("입력이 유효하지 않습니다."); // [TODO] 토스트 적용
+    }
   };
 
-  const buttonStyle = css`
-    width: 100px;
-    height: 40px;
-  `;
+  const handleChange = (value: string) => {
+    setInputValue(value);
+  };
 
   return (
     <>
       <h1>Hello Clmap</h1>
-      <button css={buttonStyle} onClick={() => setPopupOpen(true)}>
-        팝업나와
-      </button>
-      <Popup
-        isOpen={isPopupOpen}
-        title="팝업제목"
-        description="팝업입니다 근데 사실은 팝업이고 어떻게보면 팝업이지요 이정도면 됐겠지요"
-        leftButtonName="취소"
-        buttonName="저장"
-        onClickButton={handleButtonClick}
-        onClickLeft={handleLeftButtonClick}
-      >
-        <input />
-      </Popup>
+      <Input
+        size="large"
+        align="left"
+        placeHolder="이메일을 입력해주세요"
+        onChange={handleChange}
+        isValid={isValid}
+      />
+      <GradeInput onChange={handleChange} />
+      <button onClick={handleSubmit}>확인</button>
     </>
   );
 }
