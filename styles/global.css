@@ -1,9 +1,5 @@
-:root {
-  --default-font: var(--font-nanumsquare);
-}
-
 * {
-  font-family: 'NanumSquare', sans-serif;
+  font-family: "NanumSquare", sans-serif;
   box-sizing: border-box;
   width: 100%;
   padding: 0;
