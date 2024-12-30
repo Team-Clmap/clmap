@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 "use client";
 
 import DatePicker from "@/components/DatePicker";
