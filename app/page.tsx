@@ -1,22 +1,18 @@
 /** @JSXImportSource @emotion/react **/
 
-"use client";
-
-import DatePicker from "@/components/DatePicker";
-import { useState } from "react";
-import SearchField from "@/components/SearchField";
+import MembershipCard from "@/components/MembershipCard";
 
 export default function HomePage() {
-  const [date, setDate] = useState("");
-
-  const handleDateChange = (value: string) => {
-    setDate(value);
-  };
-
   return (
     <>
-      <h1>Hello Clmap</h1>
-      <DatePicker size="large" value={date} onChange={handleDateChange} />
+      <MembershipCard
+        centerName="락트리방구방구"
+        membershipType="횟수권"
+        registrationDate="24.08.18"
+        expirationDate="25.02.18"
+        restInfo="2회"
+        isEditable={true}
+      />
     </>
   );
 }
