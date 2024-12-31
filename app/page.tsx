@@ -4,6 +4,7 @@
 
 import DatePicker from "@/components/DatePicker";
 import { useState } from "react";
+import SearchField from "@/components/SearchField";
 
 export default function HomePage() {
   const [date, setDate] = useState("");
