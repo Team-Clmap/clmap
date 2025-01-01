@@ -1,38 +1,31 @@
 /** @JSXImportSource @emotion/react **/
 
 import { css } from "@emotion/react";
-import { useState } from "react";
 
 type InputProps = {
   size: "small" | "medium" | "large";
   align?: "left" | "center" | "right";
   placeHolder?: string;
-  defaultValue?: string;
-  onChange: (value: string) => void;
+  value: string;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
   isValid?: boolean;
 };
 
 const Input: React.FC<InputProps> = ({
   size,
   align = "left",
-  placeHolder = "값을 입력해주세요",
-  defaultValue,
+  placeHolder,
+  value,
   onChange,
   isValid = true,
 }) => {
-  const [value, setValue] = useState(defaultValue || "");
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setValue(e.target.value);
-    onChange(e.target.value);
-  };
-
   const inputStyle = css`
+    display: flex;
     align-items: center;
-    justify-content: ${align};
-    padding: 12px 14px;
+    text-align: ${align};
+    padding: 11px 13px;
     width: ${size === "small" ? "90px" : "100%"};
     height: 44px;
 
@@ -56,14 +49,14 @@ const Input: React.FC<InputProps> = ({
     <textarea
       css={textareaStyle}
       value={value}
-      onChange={handleChange}
+      onChange={onChange}
       placeholder={placeHolder}
     />
   ) : (
     <input
       css={inputStyle}
       value={value}
-      onChange={handleChange}
+      onChange={onChange}
       placeholder={placeHolder}
     />
   );
