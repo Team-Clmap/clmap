@@ -3,10 +3,10 @@
 "use client";
 
 import { css } from "@emotion/react";
-import Input from "./Input";
-import ToggleButton from "./ToggleButton";
-import SearchField from "./SearchField";
-import DatePicker from "./DatePicker";
+import Input from "../Input";
+import ToggleButton from "../ToggleButton";
+import SearchField from "../SearchField";
+import DatePicker from "../DatePicker";
 import { MembershipState } from "./MembershipCard";
 
 type EditMembershipProps = {
@@ -72,44 +72,44 @@ const EditMembership: React.FC<EditMembershipProps> = ({
         onClickLeft={() => onSideChange("left")}
         onClickRight={() => onSideChange("right")}
       />
-      {state.activeSide === "left" ? (
-        <div css={editBodyStyle}>
-          <div css={editBodyContentStyle}>
-            <div css={editBodyTitleStyle}>암장이름</div>
-            <div css={editBodyDescriptionStyle}>
-              <SearchField
-                size="small"
-                value={state.searchValue}
-                onChange={createChangeHandler("searchValue")}
-                onSearch={handleSearch}
-              />
-            </div>
+      <div css={editBodyStyle}>
+        <div css={editBodyContentStyle}>
+          <div css={editBodyTitleStyle}>암장이름</div>
+          <div css={editBodyDescriptionStyle}>
+            <SearchField
+              size="small"
+              value={state.searchValue}
+              onChange={createChangeHandler("searchValue")}
+              onSearch={handleSearch}
+            />
           </div>
-          <div css={editBodyContentStyle}>
-            <div css={editBodyTitleStyle}>등록일</div>
-            <div css={editBodyDescriptionStyle}>
-              <DatePicker
-                size="medium"
-                value={state.dateValue}
-                onChange={createChangeHandler("dateValue")}
-              />
-            </div>
+        </div>
+        <div css={editBodyContentStyle}>
+          <div css={editBodyTitleStyle}>등록일</div>
+          <div css={editBodyDescriptionStyle}>
+            <DatePicker
+              size="medium"
+              value={state.dateValue}
+              onChange={createChangeHandler("dateValue")}
+            />
           </div>
-          <div css={editBodyContentStyle}>
-            <div css={editBodyTitleStyle}>회원권</div>
-            <div css={editBodyDescriptionStyle}>
-              <Input
-                size="small"
-                align="right"
-                value={state.membershipCount}
-                onChange={(e) =>
-                  createChangeHandler("membershipCount")(e.target.value)
-                }
-                isValid={!!state.membershipCount.match(/^\d+$/)}
-              />
-              회권
-            </div>
+        </div>
+        <div css={editBodyContentStyle}>
+          <div css={editBodyTitleStyle}>회원권</div>
+          <div css={editBodyDescriptionStyle}>
+            <Input
+              size="small"
+              align="right"
+              value={state.membershipCount}
+              onChange={(e) =>
+                createChangeHandler("membershipCount")(e.target.value)
+              }
+              isValid={!!state.membershipCount.match(/^\d+$/)}
+            />
+            {state.activeSide === "left" ? "회권" : "개월"}
           </div>
+        </div>
+        {state.activeSide === "left" && (
           <div css={editBodyContentStyle}>
             <div css={editBodyTitleStyle}>사용횟수</div>
             <div css={editBodyDescriptionStyle}>
@@ -125,25 +125,23 @@ const EditMembership: React.FC<EditMembershipProps> = ({
               회
             </div>
           </div>
-          <div css={editBodyContentStyle}>
-            <div css={editBodyTitleStyle}>유효기간</div>
-            <div css={editBodyDescriptionStyle}>
-              <Input
-                size="small"
-                align="right"
-                value={state.validityPeriod}
-                onChange={(e) =>
-                  createChangeHandler("validityPeriod")(e.target.value)
-                }
-                isValid={!!state.validityPeriod.match(/^\d+$/)}
-              />
-              개월
-            </div>
+        )}
+        <div css={editBodyContentStyle}>
+          <div css={editBodyTitleStyle}>유효기간</div>
+          <div css={editBodyDescriptionStyle}>
+            <Input
+              size="small"
+              align="right"
+              value={state.validityPeriod}
+              onChange={(e) =>
+                createChangeHandler("validityPeriod")(e.target.value)
+              }
+              isValid={!!state.validityPeriod.match(/^\d+$/)}
+            />
+            개월
           </div>
         </div>
-      ) : (
-        <div>Hello Right side</div>
-      )}
+      </div>
     </>
   );
 };

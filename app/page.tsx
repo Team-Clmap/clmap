@@ -1,6 +1,6 @@
 /** @JSXImportSource @emotion/react **/
 
-import MembershipCard from "@/components/MembershipCard";
+import MembershipCard from "@/components/membershipCard/MembershipCard";
 
 export default function HomePage() {
   return (

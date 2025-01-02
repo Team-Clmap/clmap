@@ -4,14 +4,14 @@
 
 import { css } from "@emotion/react";
 import { useReducer, useState } from "react";
-import Chip from "./Chip";
-import BottomSheet from "./BottomSheet";
-import Scrim from "./Scrim";
+import Chip from "../Chip";
+import BottomSheet from "../BottomSheet";
+import Scrim from "../Scrim";
 import EditMembership from "./EditMembership";
 
 type MembershipCardProps = {
   centerName: string;
-  membershipType: "기간권" | "횟수권";
+  membershipType: "횟수권" | "기간권";
   registrationDate: string;
   expirationDate: string;
   restInfo: string;
@@ -70,25 +70,31 @@ const MembershipCard: React.FC<MembershipCardProps> = ({
   };
 
   const handleSubmit = () => {
-    console.log("폼이 제출되었습니다.");
-    console.log("Form Data: ", {
+    const formData = {
       searchValue: state.searchValue,
       dateValue: state.dateValue,
       membershipCount: state.membershipCount,
-      usageCount: state.usageCount,
       validityPeriod: state.validityPeriod,
-    });
+      ...(membershipType === "횟수권" && { usageCount: state.usageCount }),
+    };
+
+    console.log("폼이 제출되었습니다.");
+    console.log("Form Data: ", formData);
+
     setIsEditing(false);
   };
 
   const isFormValid = (): boolean => {
-    return (
+    const commonFieldsValid =
       state.searchValue.trim() !== "" &&
       state.dateValue.trim() !== "" &&
       state.membershipCount.trim() !== "" &&
-      state.usageCount.trim() !== "" &&
-      state.validityPeriod.trim() !== ""
-    );
+      state.validityPeriod.trim() !== "";
+
+    const usageCountValid =
+      membershipType !== "기간권" ? state.usageCount.trim() !== "" : true;
+
+    return commonFieldsValid && usageCountValid;
   };
 
   const membershipCardStyle = css`
