@@ -38,7 +38,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect }) => {
     const newSelectedDate = new Date(year, month, day);
     setSelectedDate(newSelectedDate);
 
-    const formattedDate = `${year}-${(month + 1).toString().padStart(2, "0")}-${day
+    const formattedDate = `${year}.${(month + 1).toString().padStart(2, "0")}.${day
       .toString()
       .padStart(2, "0")}`;
     onDateSelect(formattedDate);

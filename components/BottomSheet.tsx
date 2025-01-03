@@ -143,12 +143,7 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
     <div css={sheetStyle}>
       <div css={handleBarStyle} onTouchStart={handleTouchStart} />
       <div css={contentStyle}>
-        {React.Children.map(children, (child) =>
-          React.isValidElement<childProps>(child) &&
-          typeof child.type !== "string" // [Unknown Prop Warning] DOM 요소가 아닌 경우에만 전달
-            ? React.cloneElement(child, { isFormValid })
-            : child
-        )}
+        {children}
         <button
           css={buttonStyle}
           onClick={() => {

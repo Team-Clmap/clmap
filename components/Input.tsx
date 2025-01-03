@@ -3,10 +3,12 @@
 import { css } from "@emotion/react";
 
 type InputProps = {
+  type?: string;
+  pattern?: string;
   size: "small" | "medium" | "large";
   align?: "left" | "center" | "right";
-  placeHolder?: string;
-  value: string;
+  placeholder?: string;
+  value: string | number;
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
@@ -14,9 +16,11 @@ type InputProps = {
 };
 
 const Input: React.FC<InputProps> = ({
+  type = "text",
+  pattern,
   size,
   align = "left",
-  placeHolder,
+  placeholder,
   value,
   onChange,
   isValid = true,
@@ -37,6 +41,15 @@ const Input: React.FC<InputProps> = ({
     &::placeholder {
       color: #d6d6d6;
     }
+
+    ::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    ::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
   `;
 
   const textareaStyle = css`
@@ -50,14 +63,16 @@ const Input: React.FC<InputProps> = ({
       css={textareaStyle}
       value={value}
       onChange={onChange}
-      placeholder={placeHolder}
+      placeholder={placeholder}
     />
   ) : (
     <input
+      type={type}
+      pattern={pattern}
       css={inputStyle}
       value={value}
       onChange={onChange}
-      placeholder={placeHolder}
+      placeholder={placeholder}
     />
   );
 };

@@ -3,99 +3,24 @@
 "use client";
 
 import { css } from "@emotion/react";
-import { useReducer, useState } from "react";
+import { useState } from "react";
 import Chip from "../Chip";
-import BottomSheet from "../BottomSheet";
-import Scrim from "../Scrim";
 import EditMembership from "./EditMembership";
+import { MembershipCardInfo } from "@/public/mocks/membershipDatas";
 
-type MembershipCardProps = {
-  centerName: string;
-  membershipType: "횟수권" | "기간권";
-  registrationDate: string;
-  expirationDate: string;
-  restInfo: string;
-  isEditable?: boolean;
-};
-
-export type MembershipState = {
-  activeSide: "left" | "right";
-  searchValue: string;
-  dateValue: string;
-  membershipCount: string;
-  usageCount: string;
-  validityPeriod: string;
-};
-
-type Action =
-  | { type: "SET_ACTIVE_SIDE"; payload: "left" | "right" }
-  | { type: "UPDATE_FIELD"; field: keyof MembershipState; value: string };
-
-const initialState: MembershipState = {
-  activeSide: "left",
-  searchValue: "",
-  dateValue: "",
-  membershipCount: "",
-  usageCount: "",
-  validityPeriod: "",
-};
-
-const reducer = (state: MembershipState, action: Action): MembershipState => {
-  switch (action.type) {
-    case "SET_ACTIVE_SIDE":
-      return { ...state, activeSide: action.payload };
-    case "UPDATE_FIELD":
-      return { ...state, [action.field]: action.value };
-    default:
-      return state;
-  }
-};
+type MembershipCardProps = MembershipCardInfo & { isEditable?: boolean };
 
 const MembershipCard: React.FC<MembershipCardProps> = ({
-  centerName,
+  membershipCenterName,
   membershipType,
-  registrationDate,
-  expirationDate,
-  restInfo,
+  membershipRegistrationDate,
+  membershipExpirationDate,
+  membershipRestInfo,
   isEditable = false,
 }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
   const [isEditing, setIsEditing] = useState(false);
-
   const handleBottomSheetOpen = () => setIsEditing(true);
   const handleBottomSheetClose = () => setIsEditing(false);
-
-  const handleChange = (field: keyof MembershipState, value: string) => {
-    dispatch({ type: "UPDATE_FIELD", field, value });
-  };
-
-  const handleSubmit = () => {
-    const formData = {
-      searchValue: state.searchValue,
-      dateValue: state.dateValue,
-      membershipCount: state.membershipCount,
-      validityPeriod: state.validityPeriod,
-      ...(membershipType === "횟수권" && { usageCount: state.usageCount }),
-    };
-
-    console.log("폼이 제출되었습니다.");
-    console.log("Form Data: ", formData);
-
-    setIsEditing(false);
-  };
-
-  const isFormValid = (): boolean => {
-    const commonFieldsValid =
-      state.searchValue.trim() !== "" &&
-      state.dateValue.trim() !== "" &&
-      state.membershipCount.trim() !== "" &&
-      state.validityPeriod.trim() !== "";
-
-    const usageCountValid =
-      membershipType !== "기간권" ? state.usageCount.trim() !== "" : true;
-
-    return commonFieldsValid && usageCountValid;
-  };
 
   const membershipCardStyle = css`
     width: calc(100vw - 60px);
@@ -163,7 +88,7 @@ const MembershipCard: React.FC<MembershipCardProps> = ({
       <div css={membershipCardStyle}>
         <div css={cardHeaderStyle}>
           <div css={centerAndTypeStyle}>
-            {centerName}
+            {membershipCenterName}
             <Chip
               title={membershipType}
               color={membershipType === "횟수권" ? "#ffc519" : "#83bbff"}
@@ -187,40 +112,20 @@ const MembershipCard: React.FC<MembershipCardProps> = ({
         <div css={cardBodyStyle}>
           <div css={bodyContentStyle}>
             <div css={bodyTitleStyle}>등록일</div>
-            <div css={bodyDescriptionStyle}>{registrationDate}</div>
+            <div css={bodyDescriptionStyle}>{membershipRegistrationDate}</div>
           </div>
           <div css={bodyContentStyle}>
             <div css={bodyTitleStyle}>유효기간</div>
-            <div css={bodyDescriptionStyle}>{expirationDate}</div>
+            <div css={bodyDescriptionStyle}>{membershipExpirationDate}</div>
           </div>
           <div css={bodyContentStyle}>
             <div css={bodyTitleStyle}>남은기간/횟수</div>
-            <div css={bodyDescriptionStyle}>{restInfo}</div>
+            <div css={bodyDescriptionStyle}>{membershipRestInfo}</div>
           </div>
         </div>
       </div>
 
-      {isEditing && (
-        <Scrim align="end" onClose={handleBottomSheetClose}>
-          <BottomSheet
-            isOpen={isEditing}
-            onSubmit={() => {
-              handleSubmit();
-            }}
-            size="medium"
-            buttonName="수정하기"
-            isFormValid={isFormValid()}
-          >
-            <EditMembership
-              state={state}
-              onFieldChange={handleChange}
-              onSideChange={(side) =>
-                dispatch({ type: "SET_ACTIVE_SIDE", payload: side })
-              }
-            />
-          </BottomSheet>
-        </Scrim>
-      )}
+      {isEditing && <EditMembership onClose={handleBottomSheetClose} />}
     </>
   );
 };

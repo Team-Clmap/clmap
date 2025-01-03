@@ -11,11 +11,12 @@ input,
 textarea,
 select {
   font: inherit;
-  background: none;
   border: none;
   outline: none;
+  background: none;
+  background-color: inherit;
+  cursor: pointer;
 }
-
 ul,
 ol {
   list-style: none;
