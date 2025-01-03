@@ -13,10 +13,11 @@ import { MembershipEditData } from "@/public/mocks/membershipDatas";
 import { useState } from "react";
 
 type EditMembershipProps = {
+  membershipId: number;
   onClose: () => void;
 };
 
-const EditMembership: React.FC<EditMembershipProps> = ({ onClose }) => {
+const EditMembership: React.FC<EditMembershipProps> = ({ membershipId, onClose }) => {
   const [data, setData] = useState(MembershipEditData);
   const [side, setSide] = useState<"left" | "right">(
     data.membershipType === "횟수권" ? "left" : "right"
@@ -169,7 +170,7 @@ const EditMembership: React.FC<EditMembershipProps> = ({ onClose }) => {
         isOpen={true}
         onSubmit={() => {
           if (validateForm()) {
-            console.log("[TODO] 수정된 데이터 서버로 넘기기");
+            console.log("[TODO] membershipId + 수정 데이터 API 연동");
             onClose();
           }
         }}

@@ -7,10 +7,12 @@ import { useState } from "react";
 import Chip from "../Chip";
 import EditMembership from "./EditMembership";
 import { MembershipCardInfo } from "@/public/mocks/membershipDatas";
+import DeleteMembership from "./DeleteMembership";
 
 type MembershipCardProps = MembershipCardInfo & { isEditable?: boolean };
 
 const MembershipCard: React.FC<MembershipCardProps> = ({
+  membershipId,
   membershipCenterName,
   membershipType,
   membershipRegistrationDate,
@@ -19,8 +21,12 @@ const MembershipCard: React.FC<MembershipCardProps> = ({
   isEditable = false,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const handleBottomSheetOpen = () => setIsEditing(true);
   const handleBottomSheetClose = () => setIsEditing(false);
+  const handlePopupOpen = () => setIsDeleting(true);
+  const handlePopupClose = () => setIsDeleting(false);
 
   const membershipCardStyle = css`
     width: calc(100vw - 60px);
@@ -102,7 +108,7 @@ const MembershipCard: React.FC<MembershipCardProps> = ({
               |
               <button
                 css={buttonStyle}
-                onClick={() => console.log("삭제 팝업")}
+                onClick={handlePopupOpen}
               >
                 삭제
               </button>
@@ -125,7 +131,8 @@ const MembershipCard: React.FC<MembershipCardProps> = ({
         </div>
       </div>
 
-      {isEditing && <EditMembership onClose={handleBottomSheetClose} />}
+      {isEditing && <EditMembership membershipId={membershipId} onClose={handleBottomSheetClose} />}
+      {isDeleting && <DeleteMembership membershipId={membershipId} onClose={handlePopupClose} />}
     </>
   );
 };
