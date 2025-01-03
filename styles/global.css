@@ -4,6 +4,8 @@
   width: 100%;
   padding: 0;
   margin: 0;
+
+  -webkit-tap-highlight-color: transparent;
 }
 
 button,
@@ -11,11 +13,12 @@ input,
 textarea,
 select {
   font: inherit;
-  background: none;
   border: none;
   outline: none;
+  background: none;
+  background-color: inherit;
+  cursor: pointer;
 }
-
 ul,
 ol {
   list-style: none;

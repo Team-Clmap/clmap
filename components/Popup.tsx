@@ -7,21 +7,21 @@ import { ReactNode } from "react";
 
 type PopupProps = {
   title: string;
-  buttonName: string;
-  onClickButton: () => void;
   description?: string;
   children?: ReactNode;
+  buttonName: string;
   leftButtonName?: string;
+  onClickButton: () => void;
   onClickLeft?: () => void;
 };
 
 const Popup: React.FC<PopupProps> = ({
   title,
-  buttonName,
-  onClickButton,
   description,
   children,
+  buttonName,
   leftButtonName,
+  onClickButton,
   onClickLeft,
 }) => {
   const popupStyle = css`
