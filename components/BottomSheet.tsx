@@ -7,7 +7,7 @@ import { css, keyframes } from "@emotion/react";
 
 type BottomSheetProps = {
   isOpen: boolean;
-  onClose: () => void;
+  onSubmit: () => void;
   children: ReactNode;
   size: "small" | "medium" | "large";
   buttonName?: string;
@@ -28,15 +28,14 @@ const slideUp = keyframes`
 
 const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
   isOpen,
-  onClose,
+  onSubmit,
   children,
   size,
   buttonName = "닫기",
   isFormValid,
 }) => {
-  const defaultHeight = size === "small" ? 256 : size === "medium" ? 516 : 778;
-  const [height, setHeight] = useState(defaultHeight - 44);
-  const sheetRef = useRef<HTMLDivElement>(null);
+  const defaultHeight = size === "small" ? 300 : size === "medium" ? 560 : 822;
+  const [height, setHeight] = useState(defaultHeight);
   const isDragging = useRef(false);
   const startY = useRef(0);
 
@@ -76,20 +75,6 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
     };
   }, [height]);
 
-  const scrimStyle = css`
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1000;
-    display: ${isOpen ? "flex" : "none"};
-    justify-content: center;
-    align-items: flex-end;
-
-    background: rgba(0, 0, 0, 0.5);
-  `;
-
   const sheetStyle = css`
     position: relative;
     display: flex;
@@ -98,7 +83,6 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
     width: 100%;
     height: ${height}px;
     border-radius: 10px 10px 0 0;
-    padding: 20px 30px 24px;
 
     background: #ffffff;
     transition: height 0.2s;
@@ -115,7 +99,7 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
     width: 60px;
     height: 8px;
     border-radius: 20px;
-    margin-bottom: 20px;
+    margin: 20px;
 
     background-color: #d6d6d6;
     cursor: ns-resize;
@@ -146,6 +130,7 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
     height: 72px;
     border: none;
     border-radius: 10px;
+    margin: 0 30px;
 
     color: #ffffff;
     font-size: 22px;
@@ -155,24 +140,19 @@ const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
   `;
 
   return (
-    <div
-      ref={sheetRef}
-      css={scrimStyle}
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-    >
-      <div css={sheetStyle}>
-        <div css={handleBarStyle} onTouchStart={handleTouchStart} />
-        <div css={contentStyle}>
-          {React.Children.map(children, (child) =>
-            React.isValidElement<childProps>(child) &&
-            typeof child.type !== "string" // [Unknown Prop Warning] DOM 요소가 아닌 경우에만 전달
-              ? React.cloneElement(child, { isFormValid })
-              : child
-          )}
-          <button css={buttonStyle} onClick={onClose} disabled={!isFormValid}>
-            {buttonName}
-          </button>
-        </div>
+    <div css={sheetStyle}>
+      <div css={handleBarStyle} onTouchStart={handleTouchStart} />
+      <div css={contentStyle}>
+        {children}
+        <button
+          css={buttonStyle}
+          onClick={() => {
+            onSubmit();
+          }}
+          disabled={!isFormValid}
+        >
+          {buttonName}
+        </button>
       </div>
     </div>
   );

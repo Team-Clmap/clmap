@@ -8,6 +8,7 @@ type SearchFieldProps = {
   value?: string;
   onChange: (value: string) => void;
   onSearch: (value: string) => void;
+  isValid?: boolean;
 };
 
 const SearchField: React.FC<SearchFieldProps> = ({
@@ -16,6 +17,7 @@ const SearchField: React.FC<SearchFieldProps> = ({
   value = "",
   onChange,
   onSearch,
+  isValid = true,
 }) => {
   const searchFieldStyle = css`
     display: flex;
@@ -32,7 +34,7 @@ const SearchField: React.FC<SearchFieldProps> = ({
         ? "calc(100vw - 100px)"
         : "calc(100vw - 60px)"};
     height: 44px;
-    border: 1px solid #d6d6d6;
+    border: 1px solid ${isValid ? "#d6d6d6" : "#ff3b30"};
     border-radius: 10px;
   `;
 

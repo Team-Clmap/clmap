@@ -9,9 +9,15 @@ type DatePickerProps = {
   size: "medium" | "large";
   value: string;
   onChange: (value: string) => void;
+  isValid?: boolean;
 };
 
-const DatePicker: React.FC<DatePickerProps> = ({ size, value, onChange }) => {
+const DatePicker: React.FC<DatePickerProps> = ({
+  size,
+  value,
+  onChange,
+  isValid = true,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {
@@ -25,7 +31,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ size, value, onChange }) => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border: 1px solid #d6d6d6;
+    border: 1px solid ${isValid ? "#d6d6d6" : "#ff3b30"};
     border-radius: 10px;
     height: 44px;
     width: ${size === "large" ? "calc(100vw - 60px)" : "calc(100vw - 190px)"};

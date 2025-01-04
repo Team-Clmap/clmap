@@ -1,38 +1,35 @@
 /** @JSXImportSource @emotion/react **/
 
 import { css } from "@emotion/react";
-import { useState } from "react";
 
 type InputProps = {
+  type?: string;
+  pattern?: string;
   size: "small" | "medium" | "large";
   align?: "left" | "center" | "right";
-  placeHolder?: string;
-  defaultValue?: string;
-  onChange: (value: string) => void;
+  placeholder?: string;
+  value: string | number;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
   isValid?: boolean;
 };
 
 const Input: React.FC<InputProps> = ({
+  type = "text",
+  pattern,
   size,
   align = "left",
-  placeHolder = "값을 입력해주세요",
-  defaultValue,
+  placeholder,
+  value,
   onChange,
   isValid = true,
 }) => {
-  const [value, setValue] = useState(defaultValue || "");
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setValue(e.target.value);
-    onChange(e.target.value);
-  };
-
   const inputStyle = css`
+    display: flex;
     align-items: center;
-    justify-content: ${align};
-    padding: 12px 14px;
+    text-align: ${align};
+    padding: 11px 13px;
     width: ${size === "small" ? "90px" : "100%"};
     height: 44px;
 
@@ -43,6 +40,15 @@ const Input: React.FC<InputProps> = ({
 
     &::placeholder {
       color: #d6d6d6;
+    }
+
+    ::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    ::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
   `;
 
@@ -56,15 +62,17 @@ const Input: React.FC<InputProps> = ({
     <textarea
       css={textareaStyle}
       value={value}
-      onChange={handleChange}
-      placeholder={placeHolder}
+      onChange={onChange}
+      placeholder={placeholder}
     />
   ) : (
     <input
+      type={type}
+      pattern={pattern}
       css={inputStyle}
       value={value}
-      onChange={handleChange}
-      placeholder={placeHolder}
+      onChange={onChange}
+      placeholder={placeholder}
     />
   );
 };
