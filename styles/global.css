@@ -19,6 +19,7 @@ select {
   background-color: inherit;
   cursor: pointer;
 }
+
 ul,
 ol {
   list-style: none;
@@ -32,4 +33,13 @@ a {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d6d6d6;
+  border-radius: 10px;
 }
