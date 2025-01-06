@@ -19,17 +19,3 @@ select {
   background-color: inherit;
   cursor: pointer;
 }
-ul,
-ol {
-  list-style: none;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
