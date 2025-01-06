@@ -1,0 +1,6 @@
+.resetContainer,
+.resetContainer * {
+    font-family: unset;
+    width:auto;
+}
+
