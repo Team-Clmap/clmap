@@ -3,6 +3,7 @@ const nextConfig = {
   compiler: {
     emotion: true,
   },
+  serverExternalPackages: ["typeorm"],
 };
 
 module.exports = nextConfig;
