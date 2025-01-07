@@ -1,4 +1,6 @@
 import { DataSource } from "typeorm";
+import { Member } from "@/app/api/entity/member";
+import { Profile } from "@/app/api/entity/profile";
 
 import 'reflect-metadata';
 
@@ -11,7 +13,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB,
   synchronize: false,
   logging: ['query', 'error'],
-  entities: [],
+  entities: [Member, Profile],
   subscribers: [],
   migrations: [],
 });

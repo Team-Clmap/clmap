@@ -65,7 +65,7 @@ export const authOptions: NextAuthOptions = {
                 memberService.createMember({ id, provider, refreshToken, expiresAt });
                 return token;
             }
-            console.log(token);
+            
             // 만료되지 않은 경우 기존 토큰 반환
             if (Date.now() < (token.accessTokenExpires as number)) {
                 return token;
