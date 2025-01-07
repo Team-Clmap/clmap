@@ -11,7 +11,7 @@ const Chip: React.FC<ChipProps> = ({ title, color }) => {
   const chipStyle = css`
     width: fit-content;
     height: 18px;
-    padding: 4px 8px;
+    padding: ${title.length === 1 ? "4px" : "4px 8px"};
     border-radius: 90px;
 
     display: flex;
