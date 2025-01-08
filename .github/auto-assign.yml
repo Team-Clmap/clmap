@@ -1,14 +1,16 @@
-# Set to true to add reviewers to pull requests
+# true 시 Reviewer 등록
 addReviewers: true
 
-# Set to true to add assignees to pull requests
+# Assignee 등록
 addAssignees: author
 
-# A list of reviewers to be added to pull requests (GitHub user name)
+# reviewer 명당 (Github id)
 reviewers:
   - u0empty
   - jinwooseok
 
-# A number of reviewers added to the pull request
-# Set 0 to add all the reviewers (default: 0)
+# default는 0이며 0일 때 자신 제외 모든 사람을 reviewer로 포함
 numberOfReviewers: 0
+
+# Assignee 1명 할당
+numberOfAssignees: 1
