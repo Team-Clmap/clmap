@@ -16,6 +16,12 @@ function withErrorHandler(fn:Function) {
             { status: 400 }
           );
       }
+      
+      // 서버 오류
+      return NextResponse.json(
+        { message: "An unknown error occurred" },
+        { status: 500 }
+      );
     }
   };
 }
