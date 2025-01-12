@@ -2,6 +2,7 @@ import data from './nickname_set.json' assert { type: 'json' };
 
 import { NextRequest } from "next/server";
 import { MemberService } from "../service";
+import withErrorHandler from '@/utils/server-exception';
 
 export interface Nickname {
     nickname: string;
@@ -22,7 +23,7 @@ export interface CreateNicknameResponse {
  *       200:
  *         description: Hello world!
  */
-export async function GET(request: NextRequest):Promise<Response> {
+export const GET = withErrorHandler(async function(request: NextRequest):Promise<Response> {
     const memberService = MemberService.getInstance();
     const result = await memberService.createNickname();
     //응답 body 생성
@@ -36,4 +37,4 @@ export async function GET(request: NextRequest):Promise<Response> {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
     });
-}
+})
