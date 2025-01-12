@@ -52,8 +52,10 @@ export class MemberService {
         let adjective: string;
         let animal: string;
         let nickname: string;
+        let count = 0;
         // 닉네임 중복 체크
         do {
+            if (count++ >= 10) throw new Error("부여할 수 있는 닉네임이 없습니다.");
             adjective = data.prefix[Math.floor(Math.random() * data.prefix.length)];
             animal = data.suffix[Math.floor(Math.random() * data.suffix.length)];
             nickname = `${adjective} ${animal}`;
