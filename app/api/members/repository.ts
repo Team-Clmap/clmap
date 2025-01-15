@@ -45,6 +45,13 @@ export class MemberRepository {
         return count > 0;
     }
     
+    async existMemberNickname(nickname: string): Promise<boolean> {
+        const dataSource = await getDataSource();
+        const profileRepo = dataSource.getRepository(Profile);
+        const count = await profileRepo.count({ where: { nickname:nickname } });
+        return count > 0;
+    }
+    
     //멤버 초기 데이터 생성
     async createMemberInitInfo(entity: Profile): Promise<Profile> {
         const dataSource = await getDataSource();
