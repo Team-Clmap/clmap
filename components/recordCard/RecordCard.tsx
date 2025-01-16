@@ -235,6 +235,7 @@ const RecordCard: React.FC<RecordCardProps> = ({ isEditable = false }) => {
           </div>
         </div>
       </div>
+      
       {isEditing && (
         <EditRecord recordId={recordId} onClose={handleBottomSheetClose} />
       )}

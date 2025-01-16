@@ -32,17 +32,13 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
   };
 
   const photos = [
-    "/images/record_1.jpeg",
     "/images/record_2.png",
     "/images/record_3.jpeg",
     "/images/record_4.jpg",
-    "/images/record_5.jpg",
-    "/images/record_6.png",
     "/images/record_7.png",
-    "/images/record_8.png",
-    "/images/record_9.png",
-    "/images/record_10.png",
     "/images/record_11.png",
+    "/images/record_8.png",
+    "/images/record_10.png",
   ];
 
   const editTitleStyle = css`
@@ -82,23 +78,27 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
     gap: 4px;
   `;
 
-  const typeChipStyle = (checked: boolean) => css`
-    display: inline-flex;
+  const addPhotoStyle = css`
+    ${photoStyle};
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: auto;
-    padding: 14px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #ffffff;
-    background-color: ${checked ? "#83bbff" : "#b0b0b0"};
-    border-radius: 90px;
-    cursor: pointer;
+    padding: 14px;
+    background-color: #ededed;
+
+    &::before {
+      content: "";
+      width: 30px;
+      height: 30px;
+      background-image: url("/icons/add.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
   `;
 
-  // [TODO] 수정완료 > Scrim onClose 닫힘 > 수정완료시 보낸 data 재조회
   // [TODO] SearchField: value, onChange, onSearch, isValid
-  // [TODO] 운동시간 디자인 확정
+  // [TODO] TimePicker 구현
+  // [TODO] 등반기록카드 구현
   return (
     <Scrim align="end" onClose={onClose}>
       <BottomSheet
@@ -152,6 +152,10 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
           <div css={editBodyContentStyle}>
             <div css={editBodyTitleStyle}>등반 사진</div>
             <div css={photoBoxStyle}>
+              <button
+                css={addPhotoStyle}
+                onClick={() => console.log("갤러리 연동")}
+              />
               {photos.map((path, idx) => (
                 <img key={idx} css={photoStyle} src={path} />
               ))}
