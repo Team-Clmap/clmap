@@ -3,11 +3,11 @@
 "use client";
 
 import { css } from "@emotion/react";
-import BottomSheet from "../BottomSheet";
+import { useState } from "react";
 import Scrim from "../Scrim";
+import BottomSheet from "../BottomSheet";
 import SearchField from "../SearchField";
 import { photoBoxStyle, photoStyle } from "./RecordCard";
-import { useState } from "react";
 import ClimbingTypeCheckbox, { ClimbingType } from "./ClimbingTypeCheckbox";
 
 type EditRecordProps = {
@@ -16,6 +16,7 @@ type EditRecordProps = {
 };
 
 const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
+  const [searchValue, setSearchValue] = useState("");
   const [checkedStates, setCheckedStates] = useState<
     Record<ClimbingType, boolean>
   >({
@@ -23,6 +24,15 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
     endurance: false,
     lead: false,
   });
+
+  const handleSearchChange = (value: string) => {
+    console.log("입력중: ", value);
+    setSearchValue(value);
+  };
+
+  const handleSearchSubmit = (value: string) => {
+    console.log("검색할 암장: ", value);
+  };
 
   const handleCheckboxChange = (id: ClimbingType, checked: boolean) => {
     setCheckedStates((prevState) => ({
@@ -96,7 +106,7 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
     }
   `;
 
-  // [TODO] SearchField: value, onChange, onSearch, isValid
+  // [TODO] 수정하기 버튼 클릭 시 유효성 검사
   // [TODO] TimePicker 구현
   // [TODO] 등반기록카드 구현
   return (
@@ -118,8 +128,9 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
             <SearchField
               size="large"
               placeholder="암장 이름을 검색해보세요."
-              onChange={() => console.log("onChange")}
-              onSearch={() => console.log("onSearch")}
+              value={searchValue}
+              onSearch={handleSearchSubmit}
+              onChange={handleSearchChange}
             />
           </div>
           <div css={timeInfoStyle}>
