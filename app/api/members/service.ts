@@ -84,17 +84,17 @@ export class MemberService {
         if (!profile) {
             throw new Error(`Profile for member with id ${id} not found.`);
         }
-        
+        console.log(profile)
         const response: GetMemberProfileResponse = {
             status: 200,
             message: "ok",
             data: {
                 nickname: profile.nickname,
                 userInstagramId: profile.instagramId,
-                climbingStartDate: profile.climbingStartDate !== undefined ? formatDate(profile.climbingStartDate, "YYYY.mm.dd") : undefined,
-                recentClimbingDate: profile.recentClimbingDate !== undefined ? formatDate(profile.recentClimbingDate, "YYYY.mm.dd") : undefined,
-                averageClimbingTime: profile.averageClimbingTime !== undefined ? minuteToTime(profile.averageClimbingTime, "시", "분") : undefined,
-                averageClearRate: profile.averageClearRate !== undefined ? `${profile.averageClearRate}%` : undefined,
+                climbingStartDate: profile.climbingStartDate instanceof Date ? formatDate(profile.climbingStartDate, "YYYY.MM.DD") : null,
+                recentClimbingDate: profile.recentClimbingDate instanceof Date ? formatDate(profile.recentClimbingDate, "YYYY.MM.DD") : null,
+                averageClimbingTime: typeof profile.averageClimbingTime === "number" ? minuteToTime(profile.averageClimbingTime, "시", "분") : null,
+                averageClearRate: typeof profile.averageClearRate === "number" ? `${profile.averageClearRate}%` : null,
                 averageLevel: profile.averageLevel,
                 crewName: profile.crewName,
                 // titles 추가 예정
@@ -130,6 +130,6 @@ export class MemberService {
         profileEntity.instagramId = userInstagramId;
         profileEntity.image = image;
 
-        await this.memberRepository.createMemberInitInfo(dto);
+        await this.memberRepository.createMemberInitInfo(profileEntity);
     }
 }
