@@ -1,6 +1,8 @@
 import { Profile } from "@/app/api/entity/profile";
 import { CreateMemberParams, MemberRepository } from "./repository";
+import { GetMemberProfileDto, Title, GetMemberProfileResponse, UserMembershipInfo } from "./me/dto";
 import { Nickname } from "./nickname/route";
+import { formatDate, minuteToTime } from "@/utils/convert-format";
 import type { User } from "next-auth";
 
 import data from '@/app/api/members/nickname/nickname_set.json' assert { type: 'json' };
@@ -66,5 +68,42 @@ export class MemberService {
         }
         
         return result;
+    }
+    
+    // 회원 프로필 조회
+    public async getMemberProfile(id: User["id"]): Promise<GetMemberProfileResponse> {
+        const exists = await this.isMemberExist(id);
+        if (!exists) {
+            throw new Error(`Member with id ${id} does not exist.`);
+        }
+
+        const profile = await this.memberRepository.getMemberProfile(id);
+        
+        if (!profile) {
+            throw new Error(`Profile for member with id ${id} not found.`);
+        }
+        
+        const response: GetMemberProfileResponse = {
+            status: 200,
+            message: "ok",
+            data: {
+                nickname: profile.nickname,
+                userInstagramId: profile.instagramId,
+                climbingStartDate: profile.climbingStartDate !== undefined ? formatDate(profile.climbingStartDate, "YYYY.mm.dd") : undefined,
+                recentClimbingDate: profile.recentClimbingDate !== undefined ? formatDate(profile.recentClimbingDate, "YYYY.mm.dd") : undefined,
+                averageClimbingTime: profile.averageClimbingTime !== undefined ? minuteToTime(profile.averageClimbingTime, "시", "분") : undefined,
+                averageClearRate: profile.averageClearRate !== undefined ? `${profile.averageClearRate}%` : undefined,
+                averageLevel: profile.averageLevel,
+                crewName: profile.crewName,
+                // titles 추가 예정
+                titles: [],
+                // image 추가 예정
+                profileImage: profile.image,
+                // membership 추가 예정
+                userMembershipInfos: [],
+            },
+        };
+        
+        return response;
     }
 }

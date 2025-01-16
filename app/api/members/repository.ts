@@ -51,4 +51,10 @@ export class MemberRepository {
         const count = await profileRepo.count({ where: { nickname:nickname } });
         return count > 0;
     }
+    
+    async getMemberProfile(id: string): Promise<Profile | null> {
+        const dataSource = await getDataSource();
+        const profileRepo = dataSource.getRepository(Profile);
+        return profileRepo.findOne({ where: { id } });
+    }
 }
