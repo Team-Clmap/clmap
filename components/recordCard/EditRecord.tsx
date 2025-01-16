@@ -6,8 +6,9 @@ import { css } from "@emotion/react";
 import BottomSheet from "../BottomSheet";
 import Scrim from "../Scrim";
 import SearchField from "../SearchField";
-import Button from "../Button";
 import { photoBoxStyle, photoStyle } from "./RecordCard";
+import { useState } from "react";
+import ClimbingTypeCheckbox, { ClimbingType } from "./ClimbingTypeCheckbox";
 
 type EditRecordProps = {
   recordId: number;
@@ -15,6 +16,21 @@ type EditRecordProps = {
 };
 
 const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
+  const [checkedStates, setCheckedStates] = useState<
+    Record<ClimbingType, boolean>
+  >({
+    bouldering: false,
+    endurance: false,
+    lead: false,
+  });
+
+  const handleCheckboxChange = (id: ClimbingType, checked: boolean) => {
+    setCheckedStates((prevState) => ({
+      ...prevState,
+      [id]: checked,
+    }));
+  };
+
   const photos = [
     "/images/record_1.jpeg",
     "/images/record_2.png",
@@ -31,6 +47,7 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
 
   const editTitleStyle = css`
     font-size: 22px;
+    font-weight: bold;
     padding-bottom: 16px;
     text-align: center;
   `;
@@ -55,9 +72,28 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
     font-weight: bold;
   `;
 
+  const timeInfoStyle = css`
+    display: flex;
+    flex: 1;
+  `;
+
   const climbingTypeStyle = css`
     display: flex;
     gap: 4px;
+  `;
+
+  const typeChipStyle = (checked: boolean) => css`
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: ${checked ? "#83bbff" : "#b0b0b0"};
+    border-radius: 90px;
+    cursor: pointer;
   `;
 
   // [TODO] 수정완료 > Scrim onClose 닫힘 > 수정완료시 보낸 data 재조회
@@ -86,30 +122,27 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
               onSearch={() => console.log("onSearch")}
             />
           </div>
-          <div css={editBodyContentStyle}>
-            <div css={editBodyTitleStyle}>운동 시간</div>
-            <SearchField
-              size="large"
-              placeholder="암장 이름을 검색해보세요."
-              onChange={() => console.log("onChange")}
-              onSearch={() => console.log("onSearch")}
-            />
+          <div css={timeInfoStyle}>
+            <div css={editBodyContentStyle}>
+              <div css={editBodyTitleStyle}>운동 시작 시간</div>
+              <div>오후 5:01</div>
+            </div>
+            <div css={editBodyContentStyle}>
+              <div css={editBodyTitleStyle}>운동 종료 시간</div>
+              <div>오후 9:19</div>
+            </div>
           </div>
           <div css={editBodyContentStyle}>
             <div css={editBodyTitleStyle}>운동 종류</div>
             <div css={climbingTypeStyle}>
-              <label>
-                <input type="checkbox" />
-                볼더링
-              </label>
-              <label>
-                <input type="checkbox" />
-                지구력
-              </label>
-              <label>
-                <input type="checkbox" />
-                리드
-              </label>
+              {(["bouldering", "endurance", "lead"] as const).map((id) => (
+                <ClimbingTypeCheckbox
+                  key={id}
+                  id={id}
+                  checked={checkedStates[id]}
+                  onChange={handleCheckboxChange}
+                />
+              ))}
             </div>
           </div>
           <div css={editBodyContentStyle}>
