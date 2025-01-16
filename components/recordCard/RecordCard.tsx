@@ -5,8 +5,8 @@
 import { css } from "@emotion/react";
 import Chip from "../Chip";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import DeleteRecord from "./DeleteRecord";
-import EditRecord from "./EditRecord";
 
 type RecordCardProps = { isEditable?: boolean };
 
@@ -30,14 +30,15 @@ export const photoStyle = css`
 `;
 
 const RecordCard: React.FC<RecordCardProps> = ({ isEditable = false }) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+  const router = useRouter();
+  const navigateTo = (path: string) => {
+    router.push(path);
+  };
+
   // mock 연결 전 임시 변수
   const recordId = 1;
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const handleBottomSheetOpen = () => setIsEditing(true);
-  const handleBottomSheetClose = () => setIsEditing(false);
   const handlePopupOpen = () => setIsDeleting(true);
   const handlePopupClose = () => setIsDeleting(false);
 
@@ -169,7 +170,7 @@ const RecordCard: React.FC<RecordCardProps> = ({ isEditable = false }) => {
   `;
 
   // [TODO] 마크업 단계에서 API 확인할 부분: photos, grades(color, count인지 +count type 확인), chips(등반종류 map 필요)
-
+  // [TODO]
   return (
     <>
       <div css={recordCardStyle}>
@@ -184,7 +185,10 @@ const RecordCard: React.FC<RecordCardProps> = ({ isEditable = false }) => {
           </div>
           {isEditable && (
             <div css={actionButtonStyle}>
-              <button css={buttonStyle} onClick={handleBottomSheetOpen}>
+              <button
+                css={buttonStyle}
+                onClick={() => navigateTo(`/record/${recordId}`)}
+              >
                 수정
               </button>
               |
@@ -235,10 +239,7 @@ const RecordCard: React.FC<RecordCardProps> = ({ isEditable = false }) => {
           </div>
         </div>
       </div>
-      
-      {isEditing && (
-        <EditRecord recordId={recordId} onClose={handleBottomSheetClose} />
-      )}
+
       {isDeleting && (
         <DeleteRecord recordId={recordId} onClose={handlePopupClose} />
       )}
