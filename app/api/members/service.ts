@@ -3,6 +3,8 @@ import { CreateMemberParams, MemberRepository } from "./repository";
 import { GetMemberProfileDto, Title, GetMemberProfileResponse, UserMembershipInfo } from "./me/dto";
 import { Nickname } from "./nickname/route";
 import { formatDate, minuteToTime } from "@/utils/convert-format";
+import { CreateInitInfoRequest } from "./init-info/route";
+
 import type { User } from "next-auth";
 
 import data from '@/app/api/members/nickname/nickname_set.json' assert { type: 'json' };
@@ -105,5 +107,29 @@ export class MemberService {
         };
         
         return response;
+    }
+    
+    // 초기 회원 정보 생성
+    public async createMemberInitInfo(dto: CreateInitInfoRequest, id: User["id"]): Promise<void> {
+        const exists = await this.isMemberExist(id);
+        if (!exists) {
+            throw new Error(`멤버 id가 존재하지 않음`);
+        }
+
+        const { nickname, crewName, climbingStartDate, userInstagramId } = dto;
+        const image = ""; // 기본값 설정
+
+        // TODO: 이미지 업로드 로직 추가
+        // const uploadedImage = await this.uploadImage(dto.imageFile);
+            
+        const profileEntity = new Profile();
+        profileEntity.id = id;
+        profileEntity.nickname = nickname;
+        profileEntity.crewName = crewName;
+        profileEntity.climbingStartDate = climbingStartDate;
+        profileEntity.instagramId = userInstagramId;
+        profileEntity.image = image;
+
+        await this.memberRepository.createMemberInitInfo(dto);
     }
 }
