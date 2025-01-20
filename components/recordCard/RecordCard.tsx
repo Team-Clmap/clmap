@@ -137,6 +137,7 @@ const RecordCard: React.FC<RecordCardProps> = ({ isEditable = false }) => {
 
   const bodyTitleStyle = css`
     font-weight: bold;
+    white-space: nowrap;
   `;
 
   const descriptionStyle = css`
@@ -146,6 +147,7 @@ const RecordCard: React.FC<RecordCardProps> = ({ isEditable = false }) => {
   const gradeWithCountBoxStyle = css`
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 8px;
     width: 100%;
   `;
@@ -198,15 +200,18 @@ const RecordCard: React.FC<RecordCardProps> = ({ isEditable = false }) => {
             </div>
           )}
         </div>
+
         <div css={cardBodyStyle}>
           <div css={bodyContentStyle}>
             <div css={bodyTitleStyle}>운동시간</div>
             <div css={descriptionStyle}>17:01~21:19 (4시간 18분)</div>
           </div>
+
           <div css={bodyContentStyle}>
             <div css={bodyTitleStyle}>장소</div>
             <div css={descriptionStyle}>락트리 클라이밍 분당</div>
           </div>
+          
           <div css={bodyContentStyle}>
             <div css={bodyTitleStyle}>완등횟수</div>
             <div css={gradeWithCountBoxStyle}>
@@ -218,6 +223,7 @@ const RecordCard: React.FC<RecordCardProps> = ({ isEditable = false }) => {
               ))}
             </div>
           </div>
+
           <div css={bodyContentStyle}>
             <div css={bodyTitleStyle}>시도횟수</div>
             <div css={gradeWithCountBoxStyle}>
