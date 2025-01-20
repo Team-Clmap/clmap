@@ -12,6 +12,7 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB,
   synchronize: false,
+  timezone: 'Z',
   logging: ['query', 'error'],
   entities: [Member, Profile],
   subscribers: [],

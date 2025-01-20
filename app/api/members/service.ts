@@ -1,6 +1,8 @@
 import { Profile } from "@/app/api/entity/profile";
 import { CreateMemberParams, MemberRepository } from "./repository";
+import { GetMemberProfileDto, Title, GetMemberProfileResponse, UserMembershipInfo } from "./me/dto";
 import { Nickname } from "./nickname/route";
+import { formatDate, minuteToTime } from "@/utils/convert-format";
 import { CreateInitInfoRequest } from "./init-info/route";
 
 import type { User } from "next-auth";
@@ -70,6 +72,43 @@ export class MemberService {
         return result;
     }
     
+    // 회원 프로필 조회
+    public async getMemberProfile(id: User["id"]): Promise<GetMemberProfileResponse> {
+        const exists = await this.isMemberExist(id);
+        if (!exists) {
+            throw new Error(`Member with id ${id} does not exist.`);
+        }
+
+        const profile = await this.memberRepository.getMemberProfile(id);
+        
+        if (!profile) {
+            throw new Error(`Profile for member with id ${id} not found.`);
+        }
+        console.log(profile)
+        const response: GetMemberProfileResponse = {
+            status: 200,
+            message: "ok",
+            data: {
+                nickname: profile.nickname,
+                userInstagramId: profile.instagramId,
+                climbingStartDate: profile.climbingStartDate instanceof Date ? formatDate(profile.climbingStartDate, "YYYY.MM.DD") : null,
+                recentClimbingDate: profile.recentClimbingDate instanceof Date ? formatDate(profile.recentClimbingDate, "YYYY.MM.DD") : null,
+                averageClimbingTime: typeof profile.averageClimbingTime === "number" ? minuteToTime(profile.averageClimbingTime, "시", "분") : null,
+                averageClearRate: typeof profile.averageClearRate === "number" ? `${profile.averageClearRate}%` : null,
+                averageLevel: profile.averageLevel,
+                crewName: profile.crewName,
+                // titles 추가 예정
+                titles: [],
+                // image 추가 예정
+                profileImage: profile.image,
+                // membership 추가 예정
+                userMembershipInfos: [],
+            },
+        };
+        
+        return response;
+    }
+    
     // 초기 회원 정보 생성
     public async createMemberInitInfo(dto: CreateInitInfoRequest, id: User["id"]): Promise<void> {
         const exists = await this.isMemberExist(id);
@@ -91,6 +130,6 @@ export class MemberService {
         profileEntity.instagramId = userInstagramId;
         profileEntity.image = image;
 
-        await this.memberRepository.createMemberInitInfo(dto);
+        await this.memberRepository.createMemberInitInfo(profileEntity);
     }
 }

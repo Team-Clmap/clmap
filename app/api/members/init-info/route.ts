@@ -24,17 +24,26 @@ export interface CreateInitInfoRequest {
  *             properties:
  *               nickname:
  *                 type: string
+ *                 example: "포근한귀리"
  *               climbingStartDate:
  *                 type: string
+ *                 format: date
+ *                 example: "2023.10.26"
  *               userInstagramId:
  *                 type: string
+ *                 example: "@cozy_oats"
  *               crewName:
  *                 type: string
+ *                 example: "포근클라이밍"
  *               profileImage:
- *                 type: string         
+ *                 type: string
+ *                 format: uri
+ *                 example: "https://example.com/images/profile.jpg"
  *             required:
- *               - name
+ *               - nickname
+ *               - climbingStartDate
  */
+
 export async function POST(request: NextRequest) {
     const memberService = MemberService.getInstance();
     const session = await getServerSession(authOptions);
