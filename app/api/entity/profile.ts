@@ -7,29 +7,55 @@ export class Profile {
   @PrimaryColumn()
   id?: string;
 
-  @Column()
-  nickname?: string;
+  @Column({
+    type: String,
+    nullable: true
+  })
+  nickname?: string | null;
 
-  @Column({ name: 'instagram_id' })
-  instagramId?: string;
+  @Column({ 
+    type: String,
+    name: 'instagram_id',
+    nullable: true
+   })
+  instagramId?: string | null;
 
-  @Column({ name: 'climbing_start_date' })
+  @Column({ 
+    name: 'climbing_start_date', 
+    nullable: true
+  })
   climbingStartDate?: Date;
 
-  @Column({ name: 'recent_climbing_date' })
+  @Column({ 
+    name: 'recent_climbing_date', 
+    nullable: true
+  })
   recentClimbingDate?: Date;
 
-  @Column({ name: 'average_climbing_time' })
+  @Column({ 
+    name: 'average_climbing_time', 
+    nullable: true 
+  })
   averageClimbingTime?: number;
 
-  @Column({ name: 'average_clear_rate' })
+  @Column({ 
+    name: 'average_clear_rate', 
+    nullable: true 
+  })
   averageClearRate?: number;
 
-  @Column({ name: 'average_level' })
+  @Column({ 
+    name: 'average_level', 
+    nullable: true 
+  })
   averageLevel?: string;
 
-  @Column({ name: 'crew_name' })
-  crewName?: string;
+  @Column({ 
+    type: String,
+    name: 'crew_name', 
+    nullable: true 
+  })
+  crewName?: string | null;
 
   @Column()
   image?: string;

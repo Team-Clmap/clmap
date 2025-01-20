@@ -2,6 +2,7 @@ import { Profile } from "@/app/api/entity/profile";
 import { CreateMemberParams, MemberRepository } from "./repository";
 import { Nickname } from "./nickname/route";
 import { CreateInitInfoRequest } from "./init-info/route";
+import { UpdateMemberProfileRequest } from "./profile/dto";
 
 import type { User } from "next-auth";
 
@@ -92,5 +93,29 @@ export class MemberService {
         profileEntity.image = image;
 
         await this.memberRepository.createMemberInitInfo(dto);
+    }
+    
+    public async updateMemberProfile(dto: UpdateMemberProfileRequest, id: User["id"]): Promise<void> {
+        const exists = await this.isMemberExist(id);
+        if (!exists) {
+            throw new Error(`멤버 id가 존재하지 않음`);
+        }
+
+        const { nickname, crewName, userInstagramId, titleIds, profileImage } = dto;
+        const image = ""; // 기본값 설정
+
+        // TODO: 프로필 칭호 노출 변경  로직 추가
+        
+        // TODO: 이미지 업로드 로직 추가
+        // const uploadedImage = await this.uploadImage(dto.imageFile);
+        
+        const profileEntity = new Profile();
+        profileEntity.id = id;
+        profileEntity.nickname = nickname;
+        profileEntity.crewName = crewName;
+        profileEntity.instagramId = userInstagramId;
+        profileEntity.image = image;
+
+        await this.memberRepository.updateMemberProfile(profileEntity);
     }
 }

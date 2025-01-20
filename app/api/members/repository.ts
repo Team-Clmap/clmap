@@ -59,4 +59,14 @@ export class MemberRepository {
         const profile = profileRepo.create(entity);
         return profileRepo.save(profile);
     }
+    
+    async updateMemberProfile(entity: Profile) {
+        const dataSource = await getDataSource();
+        const profileRepo = dataSource.getRepository(Profile);
+        profileRepo.update({id: entity.id as string}, {
+            nickname: entity.nickname,
+            crewName: entity.crewName,
+            instagramId: entity.instagramId
+        })
+    }
 }
