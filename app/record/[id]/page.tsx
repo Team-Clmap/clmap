@@ -10,6 +10,11 @@ import ClimbingTypeCheckbox, {
   ClimbingType,
 } from "@/components/recordCard/ClimbingTypeCheckbox";
 import Header from "@/components/Header";
+import Chip from "@/components/Chip";
+import {
+  actionButtonStyle,
+  buttonStyle,
+} from "@/components/membershipCard/MembershipCard";
 
 type EditRecordProps = {
   recordId: number;
@@ -17,14 +22,53 @@ type EditRecordProps = {
 };
 
 const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
-  const [searchValue, setSearchValue] = useState("");
-  const [checkedStates, setCheckedStates] = useState<
-    Record<ClimbingType, boolean>
-  >({
-    bouldering: false,
-    endurance: false,
-    lead: false,
-  });
+  type ListItemProps = {
+    title: string;
+    color: string;
+    value1: number;
+    value2: number;
+    percentage: string;
+  };
+
+  const ListItem: React.FC<ListItemProps> = ({
+    title,
+    color,
+    value1,
+    value2,
+    percentage,
+  }) => (
+    <div css={recordListStyle}>
+      <div css={chipBoxStyle}>
+        <Chip title={title} color={color} />
+      </div>
+      <div>{value1}</div>
+      <div>{value2}</div>
+      <div>{percentage}</div>
+      <div css={actionButtonStyle}>
+        <button css={buttonStyle} onClick={handleBottomSheetOpen}>
+          수정
+        </button>
+        |
+        <button css={buttonStyle} onClick={handlePopupOpen}>
+          삭제
+        </button>
+      </div>
+    </div>
+  );
+
+  const records = [
+    {
+      title: "V99",
+      color: "#ffc519",
+      value1: 1,
+      value2: 1,
+      percentage: "100%",
+    },
+    { title: "V5", color: "#83bbff", value1: 5, value2: 5, percentage: "100%" },
+    { title: "V6", color: "#007aff", value1: 11, value2: 9, percentage: "81%" },
+    { title: "V7", color: "#ff8aa0", value1: 150, value2: 0, percentage: "0%" },
+  ];
+
   const [photos, setPhotos] = useState([
     "/images/record_2.png",
     "/images/record_3.jpeg",
@@ -34,6 +78,23 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
     "/images/record_8.png",
     "/images/record_10.png",
   ]);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const [searchValue, setSearchValue] = useState("");
+  const [checkedStates, setCheckedStates] = useState<
+    Record<ClimbingType, boolean>
+  >({
+    bouldering: false,
+    endurance: false,
+    lead: false,
+  });
+
+  const handleBottomSheetOpen = () => setIsEditing(true);
+  const handleBottomSheetClose = () => setIsEditing(false);
+  const handlePopupOpen = () => setIsDeleting(true);
+  const handlePopupClose = () => setIsDeleting(false);
 
   const handleSearchChange = (value: string) => {
     console.log("입력중: ", value);
@@ -57,91 +118,6 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
     );
   };
 
-  const recordBoxStyle = css`
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    margin: 30px;
-  `;
-
-  const cardStyle = css`
-    border: 1px solid #d6d6d6;
-    border-radius: 10px;
-    padding: 19px;
-    width: calc(100vw - 60px);
-
-    display: flex;
-    flex-direction: column;
-    gap: 26px;
-  `;
-
-  const columnStyle = css`
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    font-size: 16px;
-    line-height: 16px;
-    flex: 1;
-  `;
-
-  const rowStyle = css`
-    display: flex;
-    gap: 5px;
-    line-height: 16px;
-  `;
-
-  const titleStyle = css`
-    font-weight: bold;
-  `;
-
-  const timeInfoStyle = css`
-    width: 100%;
-    display: flex;
-  `;
-
-  const timePickerStyle = css`
-    text-align: left;
-  `;
-
-  const infoTextStyle = css`
-    font-size: 12px;
-    text-align: right;
-  `;
-
-  const addPhotoStyle = css`
-    ${photoStyle};
-    display: flex;
-    padding: 14px;
-    background-color: #ededed;
-
-    &::before {
-      content: "";
-      width: 30px;
-      height: 30px;
-      background-image: url("/icons/add.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-    }
-  `;
-
-  const deletePhotoStyle = css`
-    width: 58px;
-    height: 58px;
-    position: relative;
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 20px;
-      height: 20px;
-      background-image: url("/icons/close.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-    }
-  `;
-
   // [TODO] 유효성 검사
   // [TODO] TimePicker 구현
   // [TODO] 등반기록카드 구현
@@ -150,7 +126,7 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
     <>
       <Header title="기록하기" isBackEnabled backPath="/" />
       <div css={recordBoxStyle}>
-        <div css={cardStyle}>
+        <div css={firstCardStyle}>
           <div css={rowStyle}>
             <div css={titleStyle}>날짜</div>
             <div>2024.12.06</div>
@@ -187,7 +163,20 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
           </div>
         </div>
 
-        <div>등반 기록 카드 만들 곳</div>
+        <div css={secondCardStyle}>
+          <div css={titleBoxStyle}>
+            <div css={titleStyle}>난이도</div>
+            <div css={titleStyle}>시도수</div>
+            <div css={titleStyle}>완등수</div>
+            <div css={titleStyle}>완등률</div>
+            <button css={addButtonStyle}>추가</button>
+          </div>
+          <div css={listBoxStyle}>
+            {records.map((item, idx) => (
+              <ListItem key={idx} {...item} />
+            ))}
+          </div>
+        </div>
 
         <div css={columnStyle}>
           <div css={infoTextStyle}>*최대 10장까지 추가할 수 있어요.</div>
@@ -208,8 +197,176 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
           </div>
         </div>
       </div>
+
+      {/* {isEditing && ( // 기록추가(수정) 팝업
+        <EditMembership
+          membershipId={membershipId}
+          onClose={handleBottomSheetClose}
+        />
+      )}
+      {isDeleting && (  // 기록추가(수정) 팝업
+        <DeleteMembership
+          membershipId={membershipId}
+          onClose={handlePopupClose}
+        />
+      )} */}
     </>
   );
 };
+
+const recordBoxStyle = css`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 30px;
+`;
+
+const firstCardStyle = css`
+  border: 1px solid #d6d6d6;
+  border-radius: 10px;
+  padding: 19px;
+  width: calc(100vw - 60px);
+
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+`;
+
+const columnStyle = css`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 16px;
+  line-height: 16px;
+  flex: 1;
+`;
+
+const rowStyle = css`
+  display: flex;
+  gap: 5px;
+  line-height: 16px;
+`;
+
+const titleStyle = css`
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 16px;
+`;
+
+const timeInfoStyle = css`
+  width: 100%;
+  display: flex;
+`;
+
+const timePickerStyle = css`
+  text-align: left;
+`;
+
+const secondCardStyle = css`
+  width: calc(100vw - 60px);
+  padding: 10px 0;
+  border: 1px solid #d6d6d6;
+  border-radius: 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 21px;
+  align-items: center;
+
+  &::before {
+    content: "";
+    width: 100%;
+    position: absolute;
+    top: 38px;
+    border-top: 1px solid #d6d6d6;
+  }
+`;
+
+const titleBoxStyle = css`
+  width: calc(100vw - 110px);
+  display: flex;
+  justify-content: space-between;
+`;
+
+const addButtonStyle = css`
+  color: #83bbff;
+  line-height: 16px;
+  display: flex;
+  gap: 2px;
+  align-items: center;
+
+  &::before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    background-image: url("/icons/add-blue.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+`;
+
+const listBoxStyle = css`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const recordListStyle = css`
+  width: calc(100vw - 100px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+
+  > * {
+    width: 54px;
+    justify-content: center;
+    text-align: center;
+  }
+`;
+
+const chipBoxStyle = css`
+  display: flex;
+  justify-content: center;
+`;
+
+const infoTextStyle = css`
+  font-size: 12px;
+  text-align: right;
+`;
+
+const addPhotoStyle = css`
+  ${photoStyle};
+  display: flex;
+  padding: 14px;
+  background-color: #ededed;
+
+  &::before {
+    content: "";
+    width: 30px;
+    height: 30px;
+    background-image: url("/icons/add.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+`;
+
+const deletePhotoStyle = css`
+  width: 58px;
+  height: 58px;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    background-image: url("/icons/close.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+`;
 
 export default EditRecord;

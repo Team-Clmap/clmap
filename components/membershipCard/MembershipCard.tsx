@@ -28,67 +28,6 @@ const MembershipCard: React.FC<MembershipCardProps> = ({
   const handlePopupOpen = () => setIsDeleting(true);
   const handlePopupClose = () => setIsDeleting(false);
 
-  const membershipCardStyle = css`
-    width: calc(100vw - 60px);
-    border: 1px solid #d6d6d6;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-  `;
-
-  const cardHeaderStyle = css`
-    display: flex;
-    justify-content: space-between;
-    padding: 11px 13px;
-    border-bottom: 1px solid #d6d6d6;
-  `;
-
-  const centerAndTypeStyle = css`
-    display: flex;
-    gap: 6px;
-    font-size: 16px;
-    font-weight: bold;
-  `;
-
-  const actionButtonStyle = css`
-    width: max-content;
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    font-size: 12px;
-    font-weight: regular;
-    color: #848484;
-  `;
-
-  const buttonStyle = css`
-    width: max-content;
-    color: #848484;
-    cursor: pointer;
-  `;
-
-  const cardBodyStyle = css`
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
-    padding: 12px 14px 11px;
-  `;
-
-  const bodyContentStyle = css`
-    display: flex;
-    font-size: 14px;
-  `;
-
-  const bodyTitleStyle = css`
-    width: 106px;
-    text-align: left;
-    font-weight: bold;
-  `;
-
-  const bodyDescriptionStyle = css`
-    font-weight: regular;
-    width: fit-content;
-  `;
-
   return (
     <>
       <div css={membershipCardStyle}>
@@ -136,5 +75,66 @@ const MembershipCard: React.FC<MembershipCardProps> = ({
     </>
   );
 };
+
+const membershipCardStyle = css`
+width: calc(100vw - 60px);
+border: 1px solid #d6d6d6;
+border-radius: 10px;
+display: flex;
+flex-direction: column;
+`;
+
+const cardHeaderStyle = css`
+display: flex;
+justify-content: space-between;
+padding: 11px 13px;
+border-bottom: 1px solid #d6d6d6;
+`;
+
+const centerAndTypeStyle = css`
+display: flex;
+gap: 6px;
+font-size: 16px;
+font-weight: bold;
+`;
+
+export const actionButtonStyle = css`
+width: max-content;
+display: flex;
+align-items: center;
+gap: 2px;
+font-size: 12px;
+font-weight: regular;
+color: #848484;
+`;
+
+export const buttonStyle = css`
+width: max-content;
+color: #848484;
+cursor: pointer;
+`;
+
+const cardBodyStyle = css`
+display: flex;
+flex-direction: column;
+gap: 9px;
+padding: 12px 14px 11px;
+`;
+
+const bodyContentStyle = css`
+display: flex;
+font-size: 14px;
+`;
+
+const bodyTitleStyle = css`
+width: 106px;
+text-align: left;
+font-weight: bold;
+`;
+
+const bodyDescriptionStyle = css`
+font-weight: regular;
+width: fit-content;
+`;
 
 export default MembershipCard;
