@@ -58,6 +58,7 @@ const Popup: React.FC<PopupProps> = ({
   `;
 
   const buttonStyle = css`
+    width: 100%;
     height: 50px;
 
     font-size: 18px;
