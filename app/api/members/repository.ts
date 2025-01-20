@@ -52,6 +52,11 @@ export class MemberRepository {
         return count > 0;
     }
     
+    async getMemberProfile(id: string): Promise<Profile | null> {
+        const dataSource = await getDataSource();
+        const profileRepo = dataSource.getRepository(Profile);
+        return profileRepo.findOne({ where: { id } });
+    }
     //멤버 초기 데이터 생성
     async createMemberInitInfo(entity: Profile): Promise<Profile> {
         const dataSource = await getDataSource();
