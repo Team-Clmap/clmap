@@ -13,14 +13,14 @@ export interface UserMembershipInfo {
 }
 
 export interface GetMemberProfileDto {
-    nickname?: string;
+    nickname?: string | null;
     userInstagramId?: string | null;
     climbingStartDate?: string | null;
     recentClimbingDate?: string | null;
     averageClimbingTime?: string | null;
     averageClearRate?: string | null;
-    averageLevel?: string;
-    crewName?: string;
+    averageLevel?: string | null;
+    crewName?: string | null;
     titles?: Title[];
     profileImage?: string;
     userMembershipInfos?: UserMembershipInfo[];
