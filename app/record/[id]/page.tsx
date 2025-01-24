@@ -15,74 +15,71 @@ import {
   actionButtonStyle,
   buttonStyle,
 } from "@/components/membershipCard/MembershipCard";
+import SearchFieldBottomSheet from "@/components/SearchFieldBottomSheet";
+import TimePicker from "@/components/membershipCard/TimePicker";
+import AddRecord from "@/components/recordCard/AddRecordItem";
+import EditRecordItem from "@/components/recordCard/EditRecordItem";
+import { recordCardData } from "@/public/mocks/recordData";
+import DeleteRecordItem from "@/components/recordCard/DeleteRecordItem";
+import AddRecordItem from "@/components/recordCard/AddRecordItem";
 
 type EditRecordProps = {
   recordId: number;
-  onClose: () => void;
+  onSubmit: () => void;
 };
 
-const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
-  type ListItemProps = {
-    title: string;
-    color: string;
-    value1: number;
-    value2: number;
-    percentage: string;
-  };
+type ListItemProps = {
+  vGrade: string;
+  colorGrade: string;
+  tryCount: number;
+  completeCount: number;
+  openState: (key: string) => void;
+};
 
-  const ListItem: React.FC<ListItemProps> = ({
-    title,
-    color,
-    value1,
-    value2,
-    percentage,
-  }) => (
-    <div css={recordListStyle}>
-      <div css={chipBoxStyle}>
-        <Chip title={title} color={color} />
-      </div>
-      <div>{value1}</div>
-      <div>{value2}</div>
-      <div>{percentage}</div>
-      <div css={actionButtonStyle}>
-        <button css={buttonStyle} onClick={handleBottomSheetOpen}>
-          수정
-        </button>
-        |
-        <button css={buttonStyle} onClick={handlePopupOpen}>
-          삭제
-        </button>
-      </div>
+const ListItem: React.FC<ListItemProps> = ({
+  vGrade,
+  colorGrade,
+  tryCount,
+  completeCount,
+  openState,
+}) => (
+  <div css={recordListStyle}>
+    <div css={chipBoxStyle}>
+      <Chip title={vGrade} color={colorGrade} />
     </div>
-  );
+    <div>{tryCount}</div>
+    <div>{completeCount}</div>
+    <div>{((completeCount / tryCount) * 100).toFixed(0)}%</div>
+    <div css={actionButtonStyle}>
+      <button css={buttonStyle} onClick={() => openState("isEditing")}>
+        수정
+      </button>
+      |
+      <button css={buttonStyle} onClick={() => openState("isDeleting")}>
+        삭제
+      </button>
+    </div>
+  </div>
+);
 
-  const records = [
-    {
-      title: "V99",
-      color: "#ffc519",
-      value1: 1,
-      value2: 1,
-      percentage: "100%",
-    },
-    { title: "V5", color: "#83bbff", value1: 5, value2: 5, percentage: "100%" },
-    { title: "V6", color: "#007aff", value1: 11, value2: 9, percentage: "81%" },
-    { title: "V7", color: "#ff8aa0", value1: 150, value2: 0, percentage: "0%" },
-  ];
-
-  const [photos, setPhotos] = useState([
-    "/images/record_2.png",
-    "/images/record_3.jpeg",
-    "/images/record_4.jpg",
-    "/images/record_7.png",
-    "/images/record_11.png",
-    "/images/record_8.png",
-    "/images/record_10.png",
-  ]);
-
-  const [isEditing, setIsEditing] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
+  const records = recordCardData.vGrade.map((_, idx) => ({
+    vGrade: recordCardData.vGrade[idx],
+    colorGrade: recordCardData.colorGrade[idx],
+    tryCount: recordCardData.tryCount[idx],
+    completeCount: recordCardData.completeCount[idx],
+  }));
+  const [photos, setPhotos] = useState(recordCardData.recordImages);
 
   const [searchValue, setSearchValue] = useState("");
+  const [state, setState] = useState({
+    isSearching: false,
+    isPicking: false,
+    isAdding: false,
+    isEditing: false,
+    isDeleting: false,
+  });
+
   const [checkedStates, setCheckedStates] = useState<
     Record<ClimbingType, boolean>
   >({
@@ -91,21 +88,12 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
     lead: false,
   });
 
-  const handleBottomSheetOpen = () => setIsEditing(true);
-  const handleBottomSheetClose = () => setIsEditing(false);
-  const handlePopupOpen = () => setIsDeleting(true);
-  const handlePopupClose = () => setIsDeleting(false);
+  const openState = (key: string) =>
+    setState((prev) => ({ ...prev, [key]: true }));
+  const closeState = (key: any) =>
+    setState((prev) => ({ ...prev, [key]: false }));
 
-  const handleSearchChange = (value: string) => {
-    console.log("입력중: ", value);
-    setSearchValue(value);
-  };
-
-  const handleSearchSubmit = (value: string) => {
-    console.log("검색할 암장: ", value);
-  };
-
-  const handleCheckboxChange = (id: ClimbingType, checked: boolean) => {
+  const handleTypeChange = (id: ClimbingType, checked: boolean) => {
     setCheckedStates((prevState) => ({
       ...prevState,
       [id]: checked,
@@ -118,10 +106,9 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
     );
   };
 
-  // [TODO] 유효성 검사
+  // [TODO] 하단 버튼 생성 + 유효성 검사
   // [TODO] TimePicker 구현
-  // [TODO] 등반기록카드 구현
-  // [TODO] 하단 버튼 생성
+  // [TODO] 기록추가/수정 팝업
   return (
     <>
       <Header title="기록하기" isBackEnabled backPath="/" />
@@ -134,13 +121,20 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
 
           <div css={rowStyle}>
             <div css={titleStyle}>암장</div>
-            <div>오늘똥못쌌어암장</div>
+            <button onClick={() => openState("isSearching")}>
+              오늘똥못쌌어암장
+            </button>
           </div>
 
           <div css={timeInfoStyle}>
             <div css={columnStyle}>
               <div css={titleStyle}>운동 시작 시간</div>
-              <button css={timePickerStyle}>오후 05:01</button>
+              <button
+                css={timePickerStyle}
+                onClick={() => openState("isPicking")}
+              >
+                오후 05:01
+              </button>
             </div>
             <div css={columnStyle}>
               <div css={titleStyle}>운동 종료 시간</div>
@@ -156,7 +150,7 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
                   key={id}
                   id={id}
                   checked={checkedStates[id]}
-                  onChange={handleCheckboxChange}
+                  onChange={handleTypeChange}
                 />
               ))}
             </div>
@@ -169,11 +163,13 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
             <div css={titleStyle}>시도수</div>
             <div css={titleStyle}>완등수</div>
             <div css={titleStyle}>완등률</div>
-            <button css={addButtonStyle}>추가</button>
+            <button css={addButtonStyle} onClick={() => openState("isAdding")}>
+              추가
+            </button>
           </div>
           <div css={listBoxStyle}>
             {records.map((item, idx) => (
-              <ListItem key={idx} {...item} />
+              <ListItem key={idx} openState={openState} {...item} />
             ))}
           </div>
         </div>
@@ -198,18 +194,40 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
         </div>
       </div>
 
-      {/* {isEditing && ( // 기록추가(수정) 팝업
-        <EditMembership
-          membershipId={membershipId}
-          onClose={handleBottomSheetClose}
+      {state.isSearching && (
+        <SearchFieldBottomSheet
+          value={searchValue}
+          setValue={setSearchValue}
+          onClose={() => closeState("isSearching")}
         />
       )}
-      {isDeleting && (  // 기록추가(수정) 팝업
-        <DeleteMembership
-          membershipId={membershipId}
-          onClose={handlePopupClose}
+      {state.isPicking && (
+        <TimePicker onClose={() => closeState("isPicking")} />
+      )}
+      {state.isAdding && (
+        <AddRecordItem
+          vGrade="V0"
+          colorGrade="#83bbff"
+          tryCount={0}
+          completeCount={0}
+          onClose={() => closeState("isAdding")}
         />
-      )} */}
+      )}
+      {state.isEditing && (
+        <EditRecordItem
+          vGrade="V99"
+          colorGrade="#83bbff"
+          tryCount={1}
+          completeCount={3}
+          onClose={() => closeState("isEditing")}
+        />
+      )}
+      {state.isDeleting && (
+        <DeleteRecordItem
+          recordId={recordId}
+          onClose={() => closeState("isDeleting")}
+        />
+      )}
     </>
   );
 };
@@ -217,7 +235,7 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onClose }) => {
 const recordBoxStyle = css`
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 14px;
   margin: 30px;
 `;
 
@@ -245,6 +263,13 @@ const rowStyle = css`
   display: flex;
   gap: 5px;
   line-height: 16px;
+`;
+
+const titleBoxStyle = css`
+  width: calc(100vw - 110px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const titleStyle = css`
@@ -280,12 +305,6 @@ const secondCardStyle = css`
     top: 38px;
     border-top: 1px solid #d6d6d6;
   }
-`;
-
-const titleBoxStyle = css`
-  width: calc(100vw - 110px);
-  display: flex;
-  justify-content: space-between;
 `;
 
 const addButtonStyle = css`

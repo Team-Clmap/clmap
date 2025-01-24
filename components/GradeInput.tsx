@@ -1,9 +1,13 @@
 /** @JSXImportSource @emotion/react **/
 
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-type GradeInputProps = { onChange: (value: string) => void };
+type GradeInputProps = {
+  onChange: (value: string) => void;
+  onColorChange?: (color: string) => void;
+  color?: string;
+};
 
 const colors = [
   "#ff8aa0",
@@ -19,10 +23,18 @@ const colors = [
   "#ffffff",
 ];
 
-const GradeInput: React.FC<GradeInputProps> = ({ onChange }) => {
+const GradeInput: React.FC<GradeInputProps> = ({
+  onChange,
+  color: externalColor = "#83bbff",
+  onColorChange,
+}) => {
   const [value, setValue] = useState("0"); // [TODO] 기본값 API 확인
-  const [color, setColor] = useState("#83bbff"); // [TODO] 기본값 API 확인
+  const [color, setColor] = useState(externalColor);
   const [showPalette, setShowPalette] = useState(false);
+
+  useEffect(() => {
+    setColor(externalColor);
+  }, [externalColor]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value.replace(/[^0-9]/g, "");
@@ -35,6 +47,9 @@ const GradeInput: React.FC<GradeInputProps> = ({ onChange }) => {
   const handleColorSelect = (newColor: string) => {
     setColor(newColor);
     setShowPalette(false);
+    if (onColorChange) {
+      onColorChange(newColor);
+    }
   };
 
   const gradeInputBoxStyle = css`

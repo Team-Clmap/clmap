@@ -43,6 +43,7 @@ const Popup: React.FC<PopupProps> = ({
   const titleStyle = css`
     font-size: 22px;
     font-weight: bold;
+    line-height: 25px;
   `;
 
   const descriptionStyle = css`
@@ -80,7 +81,7 @@ const Popup: React.FC<PopupProps> = ({
   return (
     <div css={popupStyle}>
       <div css={titleStyle}>{title}</div>
-      <div css={descriptionStyle}>{description}</div>
+      {description && <div css={descriptionStyle}>{description}</div>}
       {children}
       <div css={buttonsStyle}>
         {leftButtonName && (
