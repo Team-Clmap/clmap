@@ -1,5 +1,3 @@
-import data from './nickname_set.json' assert { type: 'json' };
-
 import { NextRequest } from "next/server";
 import { MemberService } from "../service";
 import withErrorHandler from '@/utils/server-exception';
