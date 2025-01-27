@@ -3,7 +3,7 @@
 "use client";
 
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Popup from "../Popup";
 import Input from "../Input";
 import Scrim from "../Scrim";
@@ -25,7 +25,7 @@ const AddRecordItem: React.FC<RecordItemProps> = ({
   onSubmit,
   onClose,
 }) => {
-  const [isToast, setToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [values, setValues] = useState({
     colorGrade: colorGrade,
     vGrade: vGrade,
@@ -59,7 +59,11 @@ const AddRecordItem: React.FC<RecordItemProps> = ({
 
   const handleSubmit = () => {
     if (!isValid.tryAndCompleteCheck) {
-      setToast(true);
+      setToastMessage("완등수가 시도수보다 많아요.");
+      return;
+    }
+    if (values.tryCount == 0) {
+      setToastMessage("시도하지 않은 문제는 추가할 수 없어요.");
       return;
     }
     onSubmit({ id, ...values });
@@ -87,6 +91,7 @@ const AddRecordItem: React.FC<RecordItemProps> = ({
           <div css={columnStyle}>
             <div css={textStyle}>시도수</div>
             <Input
+              pattern="[0-9]*"
               size="small"
               align="center"
               value={values.tryCount.toString()}
@@ -96,6 +101,7 @@ const AddRecordItem: React.FC<RecordItemProps> = ({
           <div css={columnStyle}>
             <div css={textStyle}>완등수</div>
             <Input
+              pattern="[0-9]*"
               size="small"
               align="center"
               value={values.completeCount.toString()}
@@ -104,11 +110,11 @@ const AddRecordItem: React.FC<RecordItemProps> = ({
           </div>
         </div>
       </Popup>
-      {isToast && (
+      {toastMessage && (
         <Toast
           type="alert"
-          message="완등수가 시도수보다 많아요."
-          setIsActive={setToast}
+          message={toastMessage}
+          setIsActive={() => setToastMessage(null)}
         />
       )}
     </Scrim>

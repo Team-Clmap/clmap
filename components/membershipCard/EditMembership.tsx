@@ -17,7 +17,10 @@ type EditMembershipProps = {
   onClose: () => void;
 };
 
-const EditMembership: React.FC<EditMembershipProps> = ({ membershipId, onClose }) => {
+const EditMembership: React.FC<EditMembershipProps> = ({
+  membershipId,
+  onClose,
+}) => {
   const [data, setData] = useState(MembershipEditData);
   const [side, setSide] = useState<"left" | "right">(
     data.membershipType === "횟수권" ? "left" : "right"
@@ -51,7 +54,7 @@ const EditMembership: React.FC<EditMembershipProps> = ({ membershipId, onClose }
         | "membershipUsedCount"
         | "membershipExpirationPeriod"
     ) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    (e: React.ChangeEvent<HTMLInputElement>) => {
       setData((prev) => ({
         ...prev,
         [key]: e.target.value === "" ? 0 : Number(e.target.value),

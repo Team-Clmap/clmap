@@ -58,11 +58,7 @@ const ListItem: React.FC<ListItemProps> = ({
     </div>
     <div>{tryCount}</div>
     <div>{completeCount}</div>
-    <div>
-      {tryCount === 0
-        ? "-"
-        : `${((completeCount / tryCount) * 100).toFixed(0)}%`}
-    </div>
+    <div>{((completeCount / tryCount) * 100).toFixed(0)}%</div>
     <div css={actionButtonStyle}>
       <button css={buttonStyle} onClick={() => openState("isEditing", id)}>
         수정
