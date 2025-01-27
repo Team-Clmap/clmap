@@ -3,26 +3,26 @@
 "use client";
 
 import { css } from "@emotion/react";
+import { useState } from "react";
 import Popup from "../Popup";
 import Input from "../Input";
 import Scrim from "../Scrim";
 import GradeInput from "../GradeInput";
-import { useState } from "react";
 import Toast from "../Toast";
+import { RecordType } from "@/app/record/[id]/page";
 
-export type RecordItemProps = {
-  vGrade: string;
-  colorGrade: string;
-  tryCount: number;
-  completeCount: number;
+export type RecordItemProps = RecordType & {
+  onSubmit: (newRecord: RecordType) => void;
   onClose: () => void;
 };
 
 const AddRecordItem: React.FC<RecordItemProps> = ({
+  id,
   vGrade,
   colorGrade,
   tryCount,
   completeCount,
+  onSubmit,
   onClose,
 }) => {
   const [isToast, setToast] = useState(false);
@@ -62,8 +62,8 @@ const AddRecordItem: React.FC<RecordItemProps> = ({
       setToast(true);
       return;
     }
+    onSubmit({ id, ...values });
     onClose();
-    // 기록 추가 API 연동
   };
 
   return (

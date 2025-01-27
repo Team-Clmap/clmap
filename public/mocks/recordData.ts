@@ -1,12 +1,18 @@
 // 기록 관련 목데이터
 
-type recordCardDataType = {
-  recordCenterId: number;
-  recordCenterName: string;
-  recordRegisterDate: string;
+type recordCardReqType = {
+  year: number;
+  month: number;
+  date: number;
+};
+
+type recordCardResType = {
+  recordId: number;
+  recordClimbingTypes: string[];
   recordStartTime: string;
   recordEndTime: string;
-  recordClimbingTypes: string[];
+  duration: string;
+  recordCenterName: string;
   vGrade: string[];
   colorGrade: string[];
   tryCount: number[];
@@ -14,16 +20,23 @@ type recordCardDataType = {
   recordImages: string[]; // 추후 File로 수정
 };
 
-export const recordCardData: recordCardDataType = {
-  recordCenterId: 1,
-  recordCenterName: "락트리 클라이밍 분당",
-  recordRegisterDate: "2024.10.26",
-  recordStartTime: "12:00",
-  recordEndTime: "13:00",
+export const recordCardReqData: recordCardReqType = {
+  year: 2024,
+  month: 12,
+  date: 24,
+};
+
+// 일간 기록 조회
+export const recordCardResData: recordCardResType = {
+  recordId: 1,
   recordClimbingTypes: ["볼더링", "지구력"],
+  recordStartTime: "17:01",
+  recordEndTime: "21:19",
+  duration: "4시간 18분",
+  recordCenterName: "락트리 클라이밍 분당",
   vGrade: ["V99", "V5", "V6", "V7"],
   colorGrade: ["#ffc519", "#83bbff", "#007aff", "#ff8aa0"],
-  tryCount: [1, 5, 11, 150],
+  tryCount: [1, 5, 11, 15],
   completeCount: [1, 5, 9, 0],
   recordImages: [
     "/images/record_2.png",
@@ -33,8 +46,8 @@ export const recordCardData: recordCardDataType = {
     "/images/record_11.png",
     "/images/record_8.png",
     "/images/record_10.png",
-    "/images/record_1.png",
-    "/images/record_5.png",
+    "/images/record_1.jpeg",
+    "/images/record_5.jpg",
     "/images/record_6.png",
     "/images/record_9.png",
   ],

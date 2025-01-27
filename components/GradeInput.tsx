@@ -69,7 +69,7 @@ const GradeInput: React.FC<GradeInputProps> = ({
   const gradeButtonStyle = css`
     width: 18px;
     height: 18px;
-    border: none;
+    border: ${color === "#ffffff" ? "1px solid #d6d6d6" : "none"};
     border-radius: 50%;
     background-color: ${color};
     cursor: pointer;

@@ -4,11 +4,16 @@ import Scrim from "../Scrim";
 import Popup from "../Popup";
 
 type DeleteRecordItemProps = {
-  recordId: number;
+  id: number;
+  onSubmit: (id: number) => void;
   onClose: () => void;
 };
 
-const DeleteRecordItem: React.FC<DeleteRecordItemProps> = ({ recordId, onClose }) => {
+const DeleteRecordItem: React.FC<DeleteRecordItemProps> = ({
+  id,
+  onSubmit,
+  onClose,
+}) => {
   return (
     <Scrim align="center" onClose={onClose}>
       <Popup
@@ -17,7 +22,7 @@ const DeleteRecordItem: React.FC<DeleteRecordItemProps> = ({ recordId, onClose }
         buttonName="삭제"
         leftButtonName="취소"
         onClickButton={() => {
-          console.log("[TODO] recordId + RecordCard 삭제 API 연동");
+          onSubmit(id);
           onClose();
         }}
         onClickLeft={onClose}

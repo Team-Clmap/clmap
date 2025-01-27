@@ -3,7 +3,7 @@
 "use client";
 
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { photoBoxStyle, photoStyle } from "@/components/recordCard/RecordCard";
 import ClimbingTypeCheckbox, {
@@ -16,27 +16,36 @@ import {
   buttonStyle,
 } from "@/components/membershipCard/MembershipCard";
 import SearchFieldBottomSheet from "@/components/SearchFieldBottomSheet";
-import TimePicker from "@/components/membershipCard/TimePicker";
-import AddRecord from "@/components/recordCard/AddRecordItem";
+import TimePicker from "@/components/TimePicker/TimePicker";
 import EditRecordItem from "@/components/recordCard/EditRecordItem";
-import { recordCardData } from "@/public/mocks/recordData";
+import {
+  recordCardReqData,
+  recordCardResData,
+} from "@/public/mocks/recordData";
 import DeleteRecordItem from "@/components/recordCard/DeleteRecordItem";
 import AddRecordItem from "@/components/recordCard/AddRecordItem";
+import { formatTime } from "@/utils/utils";
+import Button from "@/components/Button";
+
+export type RecordType = {
+  id: number;
+  vGrade: string;
+  colorGrade: string;
+  tryCount: number;
+  completeCount: number;
+};
 
 type EditRecordProps = {
   recordId: number;
   onSubmit: () => void;
 };
 
-type ListItemProps = {
-  vGrade: string;
-  colorGrade: string;
-  tryCount: number;
-  completeCount: number;
-  openState: (key: string) => void;
+type ListItemProps = RecordType & {
+  openState: (key: string, id?: number) => void;
 };
 
 const ListItem: React.FC<ListItemProps> = ({
+  id,
   vGrade,
   colorGrade,
   tryCount,
@@ -49,13 +58,17 @@ const ListItem: React.FC<ListItemProps> = ({
     </div>
     <div>{tryCount}</div>
     <div>{completeCount}</div>
-    <div>{((completeCount / tryCount) * 100).toFixed(0)}%</div>
+    <div>
+      {tryCount === 0
+        ? "-"
+        : `${((completeCount / tryCount) * 100).toFixed(0)}%`}
+    </div>
     <div css={actionButtonStyle}>
-      <button css={buttonStyle} onClick={() => openState("isEditing")}>
+      <button css={buttonStyle} onClick={() => openState("isEditing", id)}>
         수정
       </button>
       |
-      <button css={buttonStyle} onClick={() => openState("isDeleting")}>
+      <button css={buttonStyle} onClick={() => openState("isDeleting", id)}>
         삭제
       </button>
     </div>
@@ -63,13 +76,27 @@ const ListItem: React.FC<ListItemProps> = ({
 );
 
 const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
-  const records = recordCardData.vGrade.map((_, idx) => ({
-    vGrade: recordCardData.vGrade[idx],
-    colorGrade: recordCardData.colorGrade[idx],
-    tryCount: recordCardData.tryCount[idx],
-    completeCount: recordCardData.completeCount[idx],
-  }));
-  const [photos, setPhotos] = useState(recordCardData.recordImages);
+  // [TODO] 일간 기록 조회 > atom 저장 > atom 조회
+  const [records, setRecords] = useState(
+    recordCardResData.vGrade.map((_, idx) => ({
+      id: idx,
+      vGrade: recordCardResData.vGrade[idx],
+      colorGrade: recordCardResData.colorGrade[idx],
+      tryCount: recordCardResData.tryCount[idx],
+      completeCount: recordCardResData.completeCount[idx],
+    }))
+  );
+
+  const year = recordCardReqData.year;
+  const month = recordCardReqData.month;
+  const date = recordCardReqData.date;
+  const [startTime, setStartTime] = useState(
+    formatTime(recordCardResData.recordStartTime)
+  );
+  const [endTime, setEndTime] = useState(
+    formatTime(recordCardResData.recordEndTime)
+  );
+  const [photos, setPhotos] = useState(recordCardResData.recordImages);
 
   const [searchValue, setSearchValue] = useState("");
   const [state, setState] = useState({
@@ -78,20 +105,21 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
     isAdding: false,
     isEditing: false,
     isDeleting: false,
+    recordId: null as number | null,
   });
 
   const [checkedStates, setCheckedStates] = useState<
     Record<ClimbingType, boolean>
   >({
-    bouldering: false,
-    endurance: false,
-    lead: false,
+    bouldering: recordCardResData.recordClimbingTypes.includes("볼더링"),
+    endurance: recordCardResData.recordClimbingTypes.includes("지구력"),
+    lead: recordCardResData.recordClimbingTypes.includes("리드"),
   });
 
-  const openState = (key: string) =>
-    setState((prev) => ({ ...prev, [key]: true }));
-  const closeState = (key: any) =>
-    setState((prev) => ({ ...prev, [key]: false }));
+  const openState = (key: string, id?: number) =>
+    setState((prev) => ({ ...prev, [key]: true, recordId: id ?? null }));
+  const closeState = (key: string) =>
+    setState((prev) => ({ ...prev, [key]: false, recordId: null }));
 
   const handleTypeChange = (id: ClimbingType, checked: boolean) => {
     setCheckedStates((prevState) => ({
@@ -106,9 +134,29 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
     );
   };
 
-  // [TODO] 하단 버튼 생성 + 유효성 검사
-  // [TODO] TimePicker 구현
-  // [TODO] 기록추가/수정 팝업
+  const handleAddRecord = (newRecord: RecordType) => {
+    setRecords((prevRecords) => [
+      ...prevRecords,
+      {
+        ...newRecord,
+        id: prevRecords.length,
+      },
+    ]);
+  };
+
+  const handleDeleteRecord = (recordItemId: number) => {
+    setRecords((prevRecords) =>
+      prevRecords.filter((record) => record.id !== recordItemId)
+    );
+  };
+
+  const handleSubmit = () => {
+    console.log("유효성 검사 및 기록 수정 API PUT");
+    console.log("일간 조회 화면으로 이동");
+  };
+
+  // [TODO] id 관련 처리, timepicker 구현, 운동 시작 종료 시간 분리
+  // [TODO] 하단 버튼 유효성 검사
   return (
     <>
       <Header title="기록하기" isBackEnabled backPath="/" />
@@ -116,13 +164,15 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
         <div css={firstCardStyle}>
           <div css={rowStyle}>
             <div css={titleStyle}>날짜</div>
-            <div>2024.12.06</div>
+            <div>
+              {year}.{month}.{date}
+            </div>
           </div>
 
           <div css={rowStyle}>
             <div css={titleStyle}>암장</div>
             <button onClick={() => openState("isSearching")}>
-              오늘똥못쌌어암장
+              {recordCardResData.recordCenterName}
             </button>
           </div>
 
@@ -133,12 +183,17 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
                 css={timePickerStyle}
                 onClick={() => openState("isPicking")}
               >
-                오후 05:01
+                {startTime}
               </button>
             </div>
             <div css={columnStyle}>
               <div css={titleStyle}>운동 종료 시간</div>
-              <button css={timePickerStyle}>오후 09:17</button>
+              <button
+                css={timePickerStyle}
+                onClick={() => openState("isPicking")}
+              >
+                {endTime}
+              </button>
             </div>
           </div>
 
@@ -192,6 +247,9 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
             ))}
           </div>
         </div>
+        <div css={buttonBoxStyle}>
+          <Button type="main" buttonName="수정하기" onClick={handleSubmit} />
+        </div>
       </div>
 
       {state.isSearching && (
@@ -202,29 +260,38 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
         />
       )}
       {state.isPicking && (
-        <TimePicker onClose={() => closeState("isPicking")} />
+        <TimePicker
+          value={startTime}
+          setValue={setStartTime}
+          onClose={() => closeState("isPicking")}
+        />
       )}
       {state.isAdding && (
         <AddRecordItem
+          id={records.length}
           vGrade="V0"
-          colorGrade="#83bbff"
+          colorGrade="#ffffff"
           tryCount={0}
           completeCount={0}
+          onSubmit={handleAddRecord}
           onClose={() => closeState("isAdding")}
         />
       )}
       {state.isEditing && (
         <EditRecordItem
-          vGrade="V99"
-          colorGrade="#83bbff"
-          tryCount={1}
-          completeCount={3}
+          id={state.recordId!}
+          vGrade={records[state.recordId!]?.vGrade}
+          colorGrade={records[state.recordId!]?.colorGrade}
+          tryCount={records[state.recordId!]?.tryCount}
+          completeCount={records[state.recordId!]?.completeCount}
+          onSubmit={handleAddRecord}
           onClose={() => closeState("isEditing")}
         />
       )}
       {state.isDeleting && (
         <DeleteRecordItem
-          recordId={recordId}
+          id={state.recordId!}
+          onSubmit={handleDeleteRecord}
           onClose={() => closeState("isDeleting")}
         />
       )}
@@ -386,6 +453,11 @@ const deletePhotoStyle = css`
     background-size: contain;
     background-repeat: no-repeat;
   }
+`;
+
+const buttonBoxStyle = css`
+  position: fixed;
+  bottom: 24px;
 `;
 
 export default EditRecord;

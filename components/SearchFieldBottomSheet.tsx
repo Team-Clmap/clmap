@@ -67,7 +67,6 @@ const boxStyle = css`
 const titleStyle = css`
   font-size: 24px;
   font-weight: bold;
-  /* text-align: center; */
 `;
 
 export default SearchFieldBottomSheet;
