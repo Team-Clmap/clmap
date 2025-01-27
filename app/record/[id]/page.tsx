@@ -3,8 +3,7 @@
 "use client";
 
 import { css } from "@emotion/react";
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
 import { photoBoxStyle, photoStyle } from "@/components/recordCard/RecordCard";
 import ClimbingTypeCheckbox, {
   ClimbingType,
@@ -24,7 +23,7 @@ import {
 } from "@/public/mocks/recordData";
 import DeleteRecordItem from "@/components/recordCard/DeleteRecordItem";
 import AddRecordItem from "@/components/recordCard/AddRecordItem";
-import { formatTime } from "@/utils/utils";
+import { formatTime, generateUniqueId } from "@/utils/utils";
 import Button from "@/components/Button";
 
 export type RecordType = {
@@ -97,7 +96,8 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
   const [searchValue, setSearchValue] = useState("");
   const [state, setState] = useState({
     isSearching: false,
-    isPicking: false,
+    isStarting: false,
+    isEnding: false,
     isAdding: false,
     isEditing: false,
     isDeleting: false,
@@ -135,7 +135,6 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
       ...prevRecords,
       {
         ...newRecord,
-        id: prevRecords.length,
       },
     ]);
   };
@@ -151,7 +150,7 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
     console.log("일간 조회 화면으로 이동");
   };
 
-  // [TODO] id 관련 처리, timepicker 구현, 운동 시작 종료 시간 분리
+  // [TODO] timepicker 구현
   // [TODO] 하단 버튼 유효성 검사
   return (
     <>
@@ -177,7 +176,7 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
               <div css={titleStyle}>운동 시작 시간</div>
               <button
                 css={timePickerStyle}
-                onClick={() => openState("isPicking")}
+                onClick={() => openState("isStarting")}
               >
                 {startTime}
               </button>
@@ -186,7 +185,7 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
               <div css={titleStyle}>운동 종료 시간</div>
               <button
                 css={timePickerStyle}
-                onClick={() => openState("isPicking")}
+                onClick={() => openState("isEnding")}
               >
                 {endTime}
               </button>
@@ -255,16 +254,23 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
           onClose={() => closeState("isSearching")}
         />
       )}
-      {state.isPicking && (
+      {state.isStarting && (
         <TimePicker
           value={startTime}
           setValue={setStartTime}
-          onClose={() => closeState("isPicking")}
+          onClose={() => closeState("isStarting")}
+        />
+      )}
+      {state.isEnding && (
+        <TimePicker
+          value={endTime}
+          setValue={setEndTime}
+          onClose={() => closeState("isEnding")}
         />
       )}
       {state.isAdding && (
         <AddRecordItem
-          id={records.length}
+          id={generateUniqueId()}
           vGrade="V0"
           colorGrade="#ffffff"
           tryCount={0}

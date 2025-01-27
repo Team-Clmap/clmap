@@ -6,3 +6,7 @@ export const formatTime = (time: string): string => {
 
   return `${meridiem} ${String(formattedHour).padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
 };
+
+export const generateUniqueId = () => {
+  return Date.now();
+};
