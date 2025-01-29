@@ -25,6 +25,7 @@ import { formatTime, generateUniqueId } from "@/utils/utils";
 import Button from "@/components/Button";
 import SelectTime from "@/components/TimePicker/SelectTime";
 import SearchPopup from "@/components/SearchPopup";
+import { useRouter } from "next/navigation";
 
 export type RecordType = {
   id: number;
@@ -71,6 +72,11 @@ const ListItem: React.FC<ListItemProps> = ({
 );
 
 const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
+  const router = useRouter();
+  const navigateTo = () => {
+    router.push("/record");
+  };
+
   // [TODO] 일간 기록 조회 > atom 저장 > atom 조회
   const [records, setRecords] = useState(
     recordCardResData.vGrade.map((_, idx) => ({
@@ -155,12 +161,12 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
 
   const handleSubmit = () => {
     console.log("유효성 검사 및 기록 수정 API");
-    console.log("일간 조회 화면으로 이동");
+    navigateTo();
   };
 
   return (
     <>
-      <Header title="기록하기" isBackEnabled backPath="/" />
+      <Header title="기록하기" isBackEnabled backPath="/record" />
       <div css={recordBoxStyle}>
         <div css={firstCardStyle}>
           <div css={rowStyle}>
