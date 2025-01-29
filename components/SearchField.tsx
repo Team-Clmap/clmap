@@ -56,6 +56,7 @@ const SearchField: React.FC<SearchFieldProps> = ({
     border: none;
     outline: none;
     padding: 0;
+    width: 100%;
     height: 100%;
     font-size: ${size === "large" ? "18px" : "16px"};
 

@@ -12,10 +12,12 @@ import { useState } from "react";
 import Toast from "../Toast";
 
 const EditRecordItem: React.FC<RecordItemProps> = ({
+  id,
   vGrade,
   colorGrade,
   tryCount,
   completeCount,
+  onSubmit,
   onClose,
 }) => {
   const [isToast, setToast] = useState(false);
@@ -55,6 +57,7 @@ const EditRecordItem: React.FC<RecordItemProps> = ({
       setToast(true);
       return;
     }
+    onSubmit({ id, ...values });
     onClose();
     // 기록 수정 API 연동
   };
@@ -74,6 +77,7 @@ const EditRecordItem: React.FC<RecordItemProps> = ({
             <GradeInput
               onChange={handleGradeChange}
               onColorChange={handleColorChange}
+              value={values.vGrade.slice(1)}
               color={values.colorGrade}
             />
           </div>

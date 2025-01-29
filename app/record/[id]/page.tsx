@@ -14,8 +14,6 @@ import {
   actionButtonStyle,
   buttonStyle,
 } from "@/components/membershipCard/MembershipCard";
-import SearchFieldBottomSheet from "@/components/SearchFieldBottomSheet";
-import TimePicker from "@/components/TimePicker/TimePicker";
 import EditRecordItem from "@/components/recordCard/EditRecordItem";
 import {
   recordCardReqData,
@@ -25,6 +23,8 @@ import DeleteRecordItem from "@/components/recordCard/DeleteRecordItem";
 import AddRecordItem from "@/components/recordCard/AddRecordItem";
 import { formatTime, generateUniqueId } from "@/utils/utils";
 import Button from "@/components/Button";
+import SelectTime from "@/components/TimePicker/SelectTime";
+import SearchPopup from "@/components/SearchPopup";
 
 export type RecordType = {
   id: number;
@@ -139,6 +139,14 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
     ]);
   };
 
+  const handleEditRecord = (updatedRecord: RecordType) => {
+    setRecords((prevRecords) =>
+      prevRecords.map((record) =>
+        record.id === updatedRecord.id ? updatedRecord : record
+      )
+    );
+  };
+
   const handleDeleteRecord = (recordItemId: number) => {
     setRecords((prevRecords) =>
       prevRecords.filter((record) => record.id !== recordItemId)
@@ -146,12 +154,10 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
   };
 
   const handleSubmit = () => {
-    console.log("유효성 검사 및 기록 수정 API PUT");
+    console.log("유효성 검사 및 기록 수정 API");
     console.log("일간 조회 화면으로 이동");
   };
 
-  // [TODO] timepicker 구현
-  // [TODO] 하단 버튼 유효성 검사
   return (
     <>
       <Header title="기록하기" isBackEnabled backPath="/" />
@@ -248,22 +254,20 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
       </div>
 
       {state.isSearching && (
-        <SearchFieldBottomSheet
+        <SearchPopup
           value={searchValue}
           setValue={setSearchValue}
           onClose={() => closeState("isSearching")}
         />
       )}
       {state.isStarting && (
-        <TimePicker
-          value={startTime}
+        <SelectTime
           setValue={setStartTime}
           onClose={() => closeState("isStarting")}
         />
       )}
       {state.isEnding && (
-        <TimePicker
-          value={endTime}
+        <SelectTime
           setValue={setEndTime}
           onClose={() => closeState("isEnding")}
         />
@@ -286,7 +290,7 @@ const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
           colorGrade={records[state.recordId!]?.colorGrade}
           tryCount={records[state.recordId!]?.tryCount}
           completeCount={records[state.recordId!]?.completeCount}
-          onSubmit={handleAddRecord}
+          onSubmit={handleEditRecord}
           onClose={() => closeState("isEditing")}
         />
       )}

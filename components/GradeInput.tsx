@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 type GradeInputProps = {
   onChange: (value: string) => void;
   onColorChange?: (color: string) => void;
+  value?: string;
   color?: string;
 };
 
@@ -25,10 +26,11 @@ const colors = [
 
 const GradeInput: React.FC<GradeInputProps> = ({
   onChange,
-  color: externalColor = "#83bbff",
   onColorChange,
+  value: externalValue = "0",
+  color: externalColor = "#83bbff",
 }) => {
-  const [value, setValue] = useState("0"); // [TODO] 기본값 API 확인
+  const [value, setValue] = useState(externalValue);
   const [color, setColor] = useState(externalColor);
   const [showPalette, setShowPalette] = useState(false);
 

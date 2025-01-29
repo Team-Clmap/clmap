@@ -1,9 +1,5 @@
 /** @JSXImportSource @emotion/react **/
 
-"use client";
-
-import RecordCard from "@/components/recordCard/RecordCard";
-
 export default function HomePage() {
-  return <RecordCard isEditable />;
+  return <h1>🌽Hello Clmap</h1>;
 }

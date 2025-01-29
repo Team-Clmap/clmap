@@ -6,7 +6,7 @@ import { css } from "@emotion/react";
 import { ReactNode } from "react";
 
 type PopupProps = {
-  title: string;
+  title?: string;
   description?: string;
   children?: ReactNode;
   buttonName: string;
@@ -80,7 +80,7 @@ const Popup: React.FC<PopupProps> = ({
 
   return (
     <div css={popupStyle}>
-      <div css={titleStyle}>{title}</div>
+      {title && <div css={titleStyle}>{title}</div>}
       {description && <div css={descriptionStyle}>{description}</div>}
       {children}
       <div css={buttonsStyle}>
