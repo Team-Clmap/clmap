@@ -3,7 +3,7 @@
 "use client";
 
 import { css } from "@emotion/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Popup from "../Popup";
 import Input from "../Input";
 import Scrim from "../Scrim";

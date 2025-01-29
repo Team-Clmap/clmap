@@ -20,7 +20,7 @@ const EditRecordItem: React.FC<RecordItemProps> = ({
   onSubmit,
   onClose,
 }) => {
-  const [isToast, setToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [values, setValues] = useState({
     colorGrade: colorGrade,
     vGrade: vGrade,
@@ -54,12 +54,15 @@ const EditRecordItem: React.FC<RecordItemProps> = ({
 
   const handleSubmit = () => {
     if (!isValid.tryAndCompleteCheck) {
-      setToast(true);
+      setToastMessage("완등수가 시도수보다 많아요.");
+      return;
+    }
+    if (values.tryCount == 0) {
+      setToastMessage("시도하지 않은 문제는 추가할 수 없어요.");
       return;
     }
     onSubmit({ id, ...values });
     onClose();
-    // 기록 수정 API 연동
   };
 
   return (
@@ -101,11 +104,11 @@ const EditRecordItem: React.FC<RecordItemProps> = ({
           </div>
         </div>
       </Popup>
-      {isToast && (
+      {toastMessage && (
         <Toast
           type="alert"
-          message="완등수가 시도수보다 많아요."
-          setIsActive={setToast}
+          message={toastMessage}
+          setIsActive={() => setToastMessage(null)}
         />
       )}
     </Scrim>
