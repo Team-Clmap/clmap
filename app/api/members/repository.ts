@@ -74,4 +74,16 @@ export class MemberRepository {
             instagramId: entity.instagramId
         })
     }
+    
+    async getMember(id: string): Promise<Member | null> {
+        const dataSource = await getDataSource();
+        const memberRepo = dataSource.getRepository(Member);
+        return memberRepo.findOne({ where: { id } });
+    }
+    
+    async deleteMember(id: string): Promise<void> {
+        const dataSource = await getDataSource();
+        const memberRepo = dataSource.getRepository(Member);
+        memberRepo.delete({ id:id });
+    }
 }

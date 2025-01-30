@@ -5,8 +5,9 @@ import { Nickname } from "./nickname/route";
 import { formatDate, minuteToTime } from "@/utils/convert-format";
 import { CreateInitInfoRequest } from "./init-info/route";
 import { UpdateMemberProfileRequest } from "./profile/dto";
+import axios from "axios";
 
-import type { User } from "next-auth";
+import type { User, Session } from "next-auth";
 
 import data from '@/app/api/members/nickname/nickname_set.json' assert { type: 'json' };
 
@@ -156,5 +157,56 @@ export class MemberService {
         profileEntity.image = image;
 
         await this.memberRepository.updateMemberProfile(profileEntity);
+    }
+    
+    public async deleteMember(session: Session): Promise<void> {
+        /*
+        구글 : https://oauth2.googleapis.com/revoke
+        네이버 : https://nid.naver.com/oauth2.0/token
+        카카오 : https://kapi.kakao.com/v1/user/unlink
+        */
+        
+        // 공급자 찾기 
+        const member = await this.memberRepository.getMember(session.user.id);
+        
+        const revokeUrls: Record<string, string> = {
+            google: "https://oauth2.googleapis.com/revoke",
+            naver: "https://nid.naver.com/oauth2.0/token",
+            kakao: "https://kapi.kakao.com/v1/user/unlink"
+        }
+        
+        let data;
+        let headers: Record<string, string> = {};
+        let provider: string | null = null;
+        
+        if (member) {
+            
+            provider = member.provider as string;
+            
+            switch(member.provider) {
+                case "google":
+                    data = { token: session.accessToken };
+                    break;
+                case "naver":
+                    data = {
+                        grant_type: "delete",
+                        client_id: process.env.NAVER_CLIENT_ID!,
+                        client_secret: process.env.NAVER_CLIENT_SECRET!,
+                        access_token: session.accessToken,
+                        service_provider: "NAVER",
+                    };
+                    break;
+                case "kakao":
+                    headers["Authorization"] = `Bearer ${session.accessToken}`;
+                    break;
+            }
+            
+            if (provider) {
+                await axios.post(revokeUrls[provider], new URLSearchParams(data).toString(), { headers });
+            }
+        }
+        
+        // db 정리
+        await this.memberRepository.deleteMember(session.user.id);
     }
 }
