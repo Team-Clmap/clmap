@@ -11,15 +11,16 @@ const Chip: React.FC<ChipProps> = ({ title, color }) => {
   const chipStyle = css`
     width: fit-content;
     height: 18px;
-    padding: 4px 8px;
+    padding: ${title.length === 1 ? "4px" : "4px 8px"};
     border-radius: 90px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    color: #ffffff;
     background-color: ${color};
+    color: ${color === "#ffffff" ? "#000000" : "#ffffff"};
+    outline: ${color === "#ffffff" ? "1px solid #d6d6d6" : "none"};
   `;
 
   const titleStyle = css`

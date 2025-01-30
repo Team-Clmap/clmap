@@ -4,7 +4,6 @@ import { css } from "@emotion/react";
 
 type SearchFieldProps = {
   size: "small" | "medium" | "large";
-  placeholder?: string;
   value?: string;
   onChange: (value: string) => void;
   onSearch: (value: string) => void;
@@ -13,7 +12,6 @@ type SearchFieldProps = {
 
 const SearchField: React.FC<SearchFieldProps> = ({
   size,
-  placeholder,
   value = "",
   onChange,
   onSearch,
@@ -33,7 +31,7 @@ const SearchField: React.FC<SearchFieldProps> = ({
       : size === "medium"
         ? "calc(100vw - 100px)"
         : "calc(100vw - 60px)"};
-    height: 44px;
+    height: ${size === "large" ? "56px" : "44px"};
     border: 1px solid ${isValid ? "#d6d6d6" : "#ff3b30"};
     border-radius: 10px;
   `;
@@ -58,6 +56,7 @@ const SearchField: React.FC<SearchFieldProps> = ({
     border: none;
     outline: none;
     padding: 0;
+    width: 100%;
     height: 100%;
     font-size: ${size === "large" ? "18px" : "16px"};
 
@@ -73,7 +72,7 @@ const SearchField: React.FC<SearchFieldProps> = ({
       </div>
       <input
         css={searchInputStyle}
-        placeholder={placeholder}
+        placeholder="암장 이름을 검색해보세요."
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />

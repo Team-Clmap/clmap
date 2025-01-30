@@ -30,6 +30,7 @@ const Scrim: React.FC<ScrimProps> = ({ align, children, onClose }) => {
     height: 100vh;
     display: flex;
     align-items: ${align === "end" ? "flex-end" : `${align}`};
+    justify-content: center;
     background: rgba(0, 0, 0, 0.5);
   `;
 

@@ -2,28 +2,34 @@
 
 import { css } from "@emotion/react";
 
-type InputProps = {
+type BaseInputProps = {
+  value: string | number;
   type?: string;
   pattern?: string;
-  size: "small" | "medium" | "large";
   align?: "left" | "center" | "right";
   placeholder?: string;
-  value: string | number;
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
   isValid?: boolean;
 };
 
+type InputProps =
+  | (BaseInputProps & {
+      size: "large";
+      onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    })
+  | (BaseInputProps & {
+      size: "small" | "medium";
+      onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    });
+
 const Input: React.FC<InputProps> = ({
+  value,
   type = "text",
   pattern,
-  size,
   align = "left",
   placeholder,
-  value,
-  onChange,
   isValid = true,
+  size,
+  onChange,
 }) => {
   const inputStyle = css`
     display: flex;
