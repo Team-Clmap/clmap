@@ -80,6 +80,7 @@ export const authOptions: NextAuthOptions = {
             if (token) {
                 session.user.id = token.user.id;
                 session.user.email = token.user.email;
+                session.accessToken = token.accessToken as string;
             }
             
             return session;
