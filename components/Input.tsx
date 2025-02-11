@@ -3,7 +3,7 @@
 import { css } from "@emotion/react";
 
 type BaseInputProps = {
-  value: string | number;
+  value?: string | number;
   type?: string;
   pattern?: string;
   align?: "left" | "center" | "right";
