@@ -6,10 +6,13 @@ import Button from "@/components/Button";
 import DatePicker from "@/components/DatePicker";
 import Input from "@/components/Input";
 import { css } from "@emotion/react";
+import { useState } from "react";
 
 type InformationPageProps = {};
 
 const InformationPage = ({}: InformationPageProps) => {
+  const [startDate, setStartDate] = useState("");
+
   return (
     <div css={pageStyle}>
       <div css={textStyle}>
@@ -30,17 +33,17 @@ const InformationPage = ({}: InformationPageProps) => {
           </div>
           <DatePicker
             size="large"
-            value=""
-            onChange={() => console.log("onChange")}
+            value={startDate}
+            onChange={(date) => setStartDate(date)}
           />
         </div>
         <div css={questionStyle}>
           <div css={titleStyle}>인스타그램에서도 소통해요!</div>
-          <Input size="medium" onChange={() => console.log("onChange")} />
+          <Input size="medium" onChange={() => console.log("instagram")} />
         </div>
         <div css={questionStyle}>
           <div css={titleStyle}>소속된 크루가 있나요?</div>
-          <Input size="medium" onChange={() => console.log("onChange")} />
+          <Input size="medium" onChange={() => console.log("crew")} />
         </div>
         <div css={questionStyle}>
           <div css={titleStyle}>프로필 사진을 등록해주세요.</div>
@@ -114,7 +117,7 @@ const addPhotoStyle = css`
     width: 30px;
     height: 30px;
     background-size: contain;
-    background-image: url(/icons/add.png);
+    background-image: url("/icons/add.png");
   }
 `;
 
