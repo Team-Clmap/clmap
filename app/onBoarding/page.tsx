@@ -2,12 +2,16 @@
 
 "use client";
 
+import { signIn } from "next-auth/react";
 import Button from "@/components/Button";
 import { css } from "@emotion/react";
+import { useRouter } from "next/navigation";
 
 type OnBoardingPageProps = {};
 
 const OnBoardingPage: React.FC<OnBoardingPageProps> = ({}) => {
+  const router = useRouter();
+
   return (
     <div css={pageStyle}>
       <div css={headerStyle}>
@@ -21,23 +25,23 @@ const OnBoardingPage: React.FC<OnBoardingPageProps> = ({}) => {
         <Button
           type="kakao"
           buttonName="카카오 로그인"
-          onClick={() => console.log("카카오 소셜로그인")}
+          onClick={() => signIn("kakao")}
         />
         <Button
           type="naver"
           buttonName="네이버 로그인"
-          onClick={() => console.log("네이버 소셜로그인")}
+          onClick={() => signIn("naver")}
         />
         <Button
           type="google"
           buttonName="구글 로그인"
-          onClick={() => console.log("구글 소셜로그인")}
+          onClick={() => signIn("google")}
         />
         <div css={textWithLineStyle}>또는</div>
         <Button
           type="sub"
           buttonName="비회원으로 시작하기"
-          onClick={() => console.log("메인페이지로 이동?")}
+          onClick={() => router.push("/map")}
         />
       </div>
     </div>
