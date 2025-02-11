@@ -48,18 +48,23 @@ const DatePicker: React.FC<DatePickerProps> = ({
   `;
 
   const calendarIconStyle = css`
-    width: 18px;
-    height: 18px;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
     position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: end;
 
     &::before {
       position: absolute;
       content: "";
-      top: -50%;
-      left: -50%;
-      right: -50%;
-      bottom: -50%;
+      width: 18px;
+      height: 18px;
+      background-image: url("/icons/calendar.png");
+      background-size: contain;
+      background-repeat: no-repeat;
     }
   `;
 
@@ -73,9 +78,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         placeholder="날짜를 선택해주세요."
         readOnly
       />
-      <div css={calendarIconStyle} onClick={handleOpen}>
-        <img src="/icons/calendar.png" alt="날짜선택" />
-      </div>
+      <div css={calendarIconStyle} onClick={handleOpen} />
       {isOpen && (
         <Scrim align="center" onClose={handleClose}>
           <Calendar onDateSelect={onChange} />

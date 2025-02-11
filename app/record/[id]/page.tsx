@@ -23,7 +23,7 @@ import DeleteRecordItem from "@/components/recordCard/DeleteRecordItem";
 import AddRecordItem from "@/components/recordCard/AddRecordItem";
 import { formatTime, generateUniqueId } from "@/utils/utils";
 import Button from "@/components/Button";
-import SelectTime from "@/components/TimePicker/SelectTime";
+import SelectTime from "@/components/timePicker/SelectTime";
 import SearchPopup from "@/components/SearchPopup";
 import { useRouter } from "next/navigation";
 
