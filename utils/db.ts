@@ -1,8 +1,11 @@
-import { DataSource } from "typeorm";
-import { Member } from "@/app/api/entity/member";
-import { Profile } from "@/app/api/entity/profile";
-
 import 'reflect-metadata';
+import { DataSource } from "typeorm";
+import { Member } from "@/app/api/entity/member"
+import { Membership } from "@/app/api/entity/membership";
+import { Title } from "@/app/api/entity/title";
+import { MemberTitle } from "@/app/api/entity/memberTitle";
+import { Center } from "@/app/api/entity/center";
+import { Profile } from '@/app/api/entity/profile';
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -14,7 +17,7 @@ export const AppDataSource = new DataSource({
   synchronize: false,
   timezone: 'Z',
   logging: ['query', 'error'],
-  entities: [Member, Profile],
+  entities: [Member, Profile, Membership, Title, MemberTitle, Center],
   subscribers: [],
   migrations: [],
 });
