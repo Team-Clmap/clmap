@@ -70,6 +70,7 @@ const Button = ({
     justify-content: center;
     gap: 4px;
     position: relative;
+    cursor: ${isActive ? "pointer" : "auto"};
   `;
 
   const iconStyle = css`
