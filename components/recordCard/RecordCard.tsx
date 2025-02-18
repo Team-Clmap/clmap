@@ -7,11 +7,14 @@ import Chip from "../Chip";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import DeleteRecord from "./DeleteRecord";
-import { recordCardReqData, recordCardResData } from "@/public/mocks/recordData";
+import {
+  recordCardReqData,
+  recordCardResData,
+} from "@/public/mocks/recordData";
 
 type RecordCardProps = { isEditable?: boolean };
 
-const RecordCard: React.FC<RecordCardProps> = ({ isEditable = false }) => {
+const RecordCard = ({ isEditable = false }: RecordCardProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
   const navigateTo = (path: string) => {

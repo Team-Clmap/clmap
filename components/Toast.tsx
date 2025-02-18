@@ -31,7 +31,7 @@ const fadeOut = keyframes`
   }
 `;
 
-const Toast: React.FC<ToastProps> = ({ type, message, setIsActive }) => {
+const Toast = ({ type, message, setIsActive }: ToastProps) => {
   const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {

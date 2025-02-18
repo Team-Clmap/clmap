@@ -44,14 +44,14 @@ type ListItemProps = RecordType & {
   openState: (key: string, id?: number) => void;
 };
 
-const ListItem: React.FC<ListItemProps> = ({
+const ListItem = ({
   id,
   vGrade,
   colorGrade,
   tryCount,
   completeCount,
   openState,
-}) => (
+}: ListItemProps) => (
   <div css={recordListStyle}>
     <div css={chipBoxStyle}>
       <Chip title={vGrade} color={colorGrade} />
@@ -71,7 +71,7 @@ const ListItem: React.FC<ListItemProps> = ({
   </div>
 );
 
-const EditRecord: React.FC<EditRecordProps> = ({ recordId, onSubmit }) => {
+const EditRecord = ({ recordId, onSubmit }: EditRecordProps) => {
   const router = useRouter();
   const navigateTo = () => {
     router.push("/record");

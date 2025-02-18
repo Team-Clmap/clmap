@@ -10,17 +10,17 @@ type RadioButtonType = {
   onChange?: (value: string) => void;
 };
 
-const RadioButton: React.FC<RadioButtonType> = ({
+const RadioButton = ({
   name,
   label,
   value,
   checked,
   onChange,
-}) => {
+}: RadioButtonType) => {
   const radioBoxStyle = css`
     width: fit-content;
   `;
-  
+
   const radioButtonStyle = css`
     appearance: none;
     width: 20px;

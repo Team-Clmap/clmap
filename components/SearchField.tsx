@@ -10,13 +10,13 @@ type SearchFieldProps = {
   isValid?: boolean;
 };
 
-const SearchField: React.FC<SearchFieldProps> = ({
+const SearchField = ({
   size,
   value = "",
   onChange,
   onSearch,
   isValid = true,
-}) => {
+}: SearchFieldProps) => {
   const searchFieldStyle = css`
     display: flex;
     align-items: center;

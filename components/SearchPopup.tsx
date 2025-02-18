@@ -13,11 +13,11 @@ type SearchPopupProps = {
   onClose: () => void;
 };
 
-const SearchPopup: React.FC<SearchPopupProps> = ({
+const SearchPopup = ({
   value: externalValue,
   setValue,
   onClose,
-}) => {
+}: SearchPopupProps) => {
   const [value, setLocalValue] = useState(externalValue);
 
   useEffect(() => {

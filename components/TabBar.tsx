@@ -11,11 +11,7 @@ type TabBarProps = {
   isBottomSheetOpen: boolean;
 };
 
-const TabBar: React.FC<TabBarProps> = ({
-  activeTab,
-  isVisiting,
-  isBottomSheetOpen,
-}) => {
+const TabBar = ({ activeTab, isVisiting, isBottomSheetOpen }: TabBarProps) => {
   const router = useRouter();
   const navigateTo = (path: string) => {
     router.push(path);
@@ -76,7 +72,7 @@ const TabBar: React.FC<TabBarProps> = ({
     align-items: center;
     justify-content: center;
     flex: 1;
-    
+
     border: none;
     padding-top: ${isActive ? "0" : "2px"};
     border-top: ${isActive ? "2px solid #83bbff" : "none"};

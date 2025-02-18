@@ -8,7 +8,7 @@ type DeleteRecordProps = {
   onClose: () => void;
 };
 
-const DeleteRecord: React.FC<DeleteRecordProps> = ({ recordId, onClose }) => {
+const DeleteRecord = ({ recordId, onClose }: DeleteRecordProps) => {
   return (
     <Scrim align="center" onClose={onClose}>
       <Popup

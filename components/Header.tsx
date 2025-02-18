@@ -11,11 +11,11 @@ type HeaderProps = {
   backPath?: string;
 };
 
-const Header: React.FC<HeaderProps> = ({
+const Header = ({
   title,
   isBackEnabled = false,
   backPath = "/",
-}) => {
+}: HeaderProps) => {
   const router = useRouter();
   const navigateTo = (path: string) => {
     router.push(path);

@@ -21,7 +21,7 @@ type InputProps =
       onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     });
 
-const Input: React.FC<InputProps> = ({
+const Input = ({
   value,
   type = "text",
   pattern,
@@ -30,7 +30,7 @@ const Input: React.FC<InputProps> = ({
   isValid = true,
   size,
   onChange,
-}) => {
+}: InputProps) => {
   const inputStyle = css`
     display: flex;
     align-items: center;

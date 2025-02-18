@@ -10,11 +10,11 @@ type TimePickerProps = {
   selectedTime: string;
 };
 
-const TimePicker: React.FC<TimePickerProps> = ({
+const TimePicker = ({
   range,
   handleTimeScroll,
   selectedTime,
-}) => {
+}: TimePickerProps) => {
   return (
     <div css={containerStyle}>
       <div css={scrollBoxStyle} onScroll={handleTimeScroll}>
