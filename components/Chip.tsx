@@ -7,7 +7,7 @@ type ChipProps = {
   color: string;
 };
 
-const Chip: React.FC<ChipProps> = ({ title, color }) => {
+const Chip = ({ title, color }: ChipProps) => {
   const chipStyle = css`
     width: fit-content;
     height: 18px;

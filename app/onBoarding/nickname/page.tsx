@@ -7,7 +7,7 @@ import { css } from "@emotion/react";
 
 type CreateNicknameProps = {};
 
-const CreateNicknamePage: React.FC<CreateNicknameProps> = ({}) => {
+const CreateNicknamePage = (CreateNicknameProps: CreateNicknameProps) => {
   return (
     <div css={pageStyle}>
       <div css={textStyle}>

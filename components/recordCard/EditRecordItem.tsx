@@ -11,7 +11,7 @@ import GradeInput from "../GradeInput";
 import { useState } from "react";
 import Toast from "../Toast";
 
-const EditRecordItem: React.FC<RecordItemProps> = ({
+const EditRecordItem = ({
   id,
   vGrade,
   colorGrade,
@@ -19,7 +19,7 @@ const EditRecordItem: React.FC<RecordItemProps> = ({
   completeCount,
   onSubmit,
   onClose,
-}) => {
+}: RecordItemProps) => {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [values, setValues] = useState({
     colorGrade: colorGrade,

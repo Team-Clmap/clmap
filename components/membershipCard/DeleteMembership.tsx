@@ -8,10 +8,7 @@ type DeleteMembershipProps = {
   onClose: () => void;
 };
 
-const DeleteMembership: React.FC<DeleteMembershipProps> = ({
-  membershipId,
-  onClose,
-}) => {
+const DeleteMembership = ({ membershipId, onClose }: DeleteMembershipProps) => {
   return (
     <Scrim align="center" onClose={onClose}>
       <Popup

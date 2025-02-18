@@ -12,14 +12,14 @@ type ButtonProps = {
   iconName?: string;
 };
 
-const Button: React.FC<ButtonProps> = ({
+const Button = ({
   type,
   buttonName,
   onClick,
   width = "whole",
   isActive = true,
   iconName,
-}) => {
+}: ButtonProps) => {
   const colorStyles = {
     main: {
       background: isActive ? "#83bbff" : "#b0b0b0",

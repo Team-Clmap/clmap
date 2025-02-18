@@ -15,7 +15,7 @@ type PopupProps = {
   onClickLeft?: () => void;
 };
 
-const Popup: React.FC<PopupProps> = ({
+const Popup = ({
   title,
   description,
   children,
@@ -23,7 +23,7 @@ const Popup: React.FC<PopupProps> = ({
   leftButtonName,
   onClickButton,
   onClickLeft,
-}) => {
+}: PopupProps) => {
   const popupStyle = css`
     display: flex;
     flex-direction: column;
