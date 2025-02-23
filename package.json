@@ -11,8 +11,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
-    "swagger-ui-react": "^5.18.2",
     "reflect-metadata": "^0.2.2",
+    "swagger-ui-react": "^5.18.2",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
@@ -24,12 +24,19 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "prettier": "^3.4.2",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.2"
   },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --d ./utils/db", 
+    "migration:create": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create ./src/database/migrations/Migration",
+    "migration:generate": "yarn run typeorm migration:generate ./src/database/migrations/Migration",
+    "migration:run": "yarn run typeorm  migration:run",
+    "migration:revert": "yarn run typeorm migration:revert"
   }
 }

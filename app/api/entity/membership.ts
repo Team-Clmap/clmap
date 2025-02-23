@@ -1,9 +1,9 @@
 import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm';
-import { Profile } from './profile';
+import { Member } from './member';
 import { Center } from './center';
 
 // Member 테이블과 연동된 Entity
-@Entity({name:'Membership'})
+@Entity({name:'membership'})
 export class Membership {
   @PrimaryColumn()
   id?: string;
@@ -11,11 +11,11 @@ export class Membership {
   @Column()
   type?: string;
   
-  @ManyToOne(() => Profile, (profile) => profile.memberships)
-  memberId?: Profile;
+  @ManyToOne(() => Member, (member) => member.memberships)
+  member?: Member;
   
   @ManyToOne(() => Center, (center) => center.memberships)
-  centerId?: Center;
+  center?: Center;
 
   @Column({ name: 'register_date' })
   registerDate?: Date;

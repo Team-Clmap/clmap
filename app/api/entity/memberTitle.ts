@@ -1,8 +1,8 @@
 import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm';
-import { Profile } from './profile';
+import { Member } from './member';
 import { Title } from './title';
 
-@Entity({name:'MemberTitle'})
+@Entity({name:'member_title'})
 export class MemberTitle {
   @PrimaryColumn()
   id?: string;
@@ -11,9 +11,9 @@ export class MemberTitle {
   visible?: number;
 
   
-  @ManyToOne(() => Profile, (profile) => profile.memberTitles)
-  memberId?: Profile;
+  @ManyToOne(() => Member, (member) => member.memberTitles)
+  member?: Member;
 
   @ManyToOne(() => Title, (title) => title.memberTitles)
-  titleId?: Title;
+  title?: Title;
 }

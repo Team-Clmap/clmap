@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryColumn, OneToMany, JoinTable } from 'typeorm';
 import { MemberTitle } from './memberTitle';
 
-@Entity({name:'Title'})
+@Entity({name:'title'})
 export class Title {
   @PrimaryColumn()
   id?: string;
@@ -12,6 +12,6 @@ export class Title {
   @Column()
   color?: string;
   
-  @OneToMany(() => MemberTitle, (memberTitle) => memberTitle.titleId)
+  @OneToMany(() => MemberTitle, (memberTitle) => memberTitle.title)
   memberTitles?: MemberTitle;
 }

@@ -38,5 +38,10 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "ts-node": { // typeorm 사용시에만 CommonJS 형식 사용
+    "compilerOptions": {
+      "module": "CommonJS",
+    }
+  }
 }

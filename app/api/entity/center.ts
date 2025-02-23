@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryColumn, OneToMany } from 'typeorm';
 import { Membership } from './membership';
 // Member 테이블과 연동된 Entity
-@Entity({name:'Center'})
+@Entity({name:'center'})
 export class Center {
   @PrimaryColumn()
   id?: string;
@@ -18,7 +18,7 @@ export class Center {
   @Column({ name: 'location' })
   location?: string;
   
-  @Column({ name: 'openTime' })
+  @Column({ name: 'open_time' })
   openTime?: string;
   
   @Column({ name: 'tel1' })
@@ -39,6 +39,6 @@ export class Center {
   @Column({ name: 'problem_review_count' })
   problem_review_count?: string;
 
-  @OneToMany(() => Membership, (membership) => membership.centerId)
+  @OneToMany(() => Membership, (membership) => membership.center)
   memberships?: Membership;
 }
