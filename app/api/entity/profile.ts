@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, OneToMany, JoinTable } from 'typeorm';
+import { MemberTitle } from './memberTitle';
+import { Membership } from './membership';
 
 // Profile 테이블과 연동된 Entity
 @Entity({name:'Profile'})
@@ -62,4 +64,10 @@ export class Profile {
 
   @Column({ name: 'is_visited' })
   isVisited?: boolean;
+  
+  @OneToMany(() => MemberTitle, (memberTitle) => memberTitle.memberId)
+  memberTitles?: MemberTitle;
+  
+  @OneToMany(() => Membership, (membership) => membership.memberId)
+  memberships?: Membership;
 }

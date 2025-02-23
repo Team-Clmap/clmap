@@ -14,7 +14,10 @@ export class Member {
 
   @Column({ name: 'refresh_token' })
   refreshToken?: string;
-
+  
   @Column({ name: 'expires_at' })
   expiresAt?: Date;
+  
+  @Column({ name: 'is_inited' })
+  isInited?: boolean;
 }
