@@ -24,12 +24,12 @@ const colors = [
   "#ffffff",
 ];
 
-const GradeInput: React.FC<GradeInputProps> = ({
+const GradeInput = ({
   onChange,
   onColorChange,
   value: externalValue = "0",
   color: externalColor = "#83bbff",
-}) => {
+}: GradeInputProps) => {
   const [value, setValue] = useState(externalValue);
   const [color, setColor] = useState(externalColor);
   const [showPalette, setShowPalette] = useState(false);

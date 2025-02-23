@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 type OnBoardingPageProps = {};
 
-const OnBoardingPage: React.FC<OnBoardingPageProps> = ({}) => {
+const OnBoardingPage = (OnBoardingPageProps: OnBoardingPageProps) => {
   const router = useRouter();
 
   return (

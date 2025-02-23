@@ -9,7 +9,7 @@ type ScrimProps = {
   onClose: () => void;
 };
 
-const Scrim: React.FC<ScrimProps> = ({ align, children, onClose }) => {
+const Scrim = ({ align, children, onClose }: ScrimProps) => {
   const handleScrimClick = () => {
     onClose();
   };

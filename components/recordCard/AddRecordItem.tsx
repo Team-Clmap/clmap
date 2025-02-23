@@ -16,7 +16,7 @@ export type RecordItemProps = RecordType & {
   onClose: () => void;
 };
 
-const AddRecordItem: React.FC<RecordItemProps> = ({
+const AddRecordItem = ({
   id,
   vGrade,
   colorGrade,
@@ -24,7 +24,7 @@ const AddRecordItem: React.FC<RecordItemProps> = ({
   completeCount,
   onSubmit,
   onClose,
-}) => {
+}: RecordItemProps) => {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [values, setValues] = useState({
     colorGrade: colorGrade,

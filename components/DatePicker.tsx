@@ -12,12 +12,12 @@ type DatePickerProps = {
   isValid?: boolean;
 };
 
-const DatePicker: React.FC<DatePickerProps> = ({
+const DatePicker = ({
   size,
   value,
   onChange,
   isValid = true,
-}) => {
+}: DatePickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {

@@ -13,7 +13,7 @@ type SelectTimeProps = {
   onClose: () => void;
 };
 
-const SelectTime: React.FC<SelectTimeProps> = ({ setValue, onClose }) => {
+const SelectTime = ({ setValue, onClose }: SelectTimeProps) => {
   const [selectedMeridiem, setSelectedMeridiem] = useState("오전");
   const [selectedHour, setSelectedHour] = useState("12");
   const [selectedMinute, setSelectedMinute] = useState("00");

@@ -11,13 +11,13 @@ type ToggleButtonProps = {
   onClickRight: () => void;
 };
 
-const ToggleButton: React.FC<ToggleButtonProps> = ({
+const ToggleButton = ({
   activeSide,
   leftButtonName,
   rightButtonName,
   onClickLeft,
   onClickRight,
-}) => {
+}: ToggleButtonProps) => {
   const ToggleButtonStyle = css`
     width: 100vw;
     height: 45px;

@@ -26,14 +26,14 @@ const slideUp = keyframes`
   }
 `;
 
-const BottomSheet: React.FC<BottomSheetProps & childProps> = ({
+const BottomSheet = ({
   isOpen,
   onSubmit,
   children,
   size,
   buttonName = "닫기",
   isFormValid,
-}) => {
+}: BottomSheetProps & childProps) => {
   const defaultHeight = size === "small" ? 300 : size === "medium" ? 560 : 822;
   const [height, setHeight] = useState(defaultHeight);
   const isDragging = useRef(false);
