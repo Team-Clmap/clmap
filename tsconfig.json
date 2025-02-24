@@ -35,7 +35,7 @@
     "**/*.tsx",
     "next-env.d.ts",
     ".next/types/**/*.ts"
-, "src/database/migrations/1740397677865-Migration.js"  ],
+, "utils/database/migrations/1740397677865-Migration.js"  ],
   "exclude": [
     "node_modules"
   ],
