@@ -1,7 +1,7 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, OneToMany, JoinTable } from 'typeorm';
 
 // Profile 테이블과 연동된 Entity
-@Entity({name:'Profile'})
+@Entity({name:'profile'})
 export class Profile {
   
   @PrimaryColumn()

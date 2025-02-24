@@ -1,10 +1,12 @@
 import { Profile } from "@/app/api/entity/profile";
 import { CreateMemberParams, MemberRepository } from "./repository";
-import { GetMemberProfileDto, Title, GetMemberProfileResponse, UserMembershipInfo } from "./me/dto";
+import { GetMemberProfileResponse } from "./me/dto";
 import { Nickname } from "./nickname/route";
 import { formatDate, minuteToTime } from "@/utils/convert-format";
 import { CreateInitInfoRequest } from "./init-info/route";
 import { UpdateMemberProfileRequest } from "./profile/dto";
+import { Member } from "../entity/member";
+
 import axios from "axios";
 
 import type { User, Session } from "next-auth";
@@ -52,6 +54,10 @@ export class MemberService {
             console.error(`이미 존재함`);
             throw error;
         }
+    }
+    
+    public async getMemberById(id: string): Promise<Member | null> {
+        return this.memberRepository.getMember(id);
     }
     
     public async createNickname(): Promise<Nickname> {

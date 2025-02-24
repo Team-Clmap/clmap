@@ -16,5 +16,7 @@ declare module 'next-auth' {
     interface Session extends DefaultSession {
       user: User;
       accessToken: string;
+      isNewUser: boolean; //신규 가입자 여부
+      isInited: boolean; // 온보딩 여부
     }
 }

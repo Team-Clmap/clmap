@@ -47,6 +47,9 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async jwt({ token, account, user }: JwtCallbackParams): Promise<JWT> {
             if (account && user) {
+                const existingUser = await memberService.getMemberById(user.id);
+                const isNewUser: boolean = !existingUser;
+                const isInited: boolean = existingUser ? existingUser.isInited as boolean:false;
                 
                 // 초기 로그인 시 새로운 토큰 생성 + db 저장
                 token = {
@@ -54,15 +57,19 @@ export const authOptions: NextAuthOptions = {
                     accessToken: account.access_token,
                     accessTokenExpires: Date.now() + 3000,
                     refreshToken: account.refresh_token,
-                    user: user
+                    user: user,
+                    isNewUser: isNewUser,
+                    isInited: isInited
                 };
                 
-                // db 저장
-                const id = user.id; 
-                const provider = account.provider;
-                const refreshToken = token.refreshToken as string;
-                const expiresAt = new Date(Date.now()+10000000);
-                memberService.createMember({ id, provider, refreshToken, expiresAt });
+                // 새로운 유저인 경우 db 저장
+                if (isNewUser) {
+                    const id = user.id;
+                    const provider = account.provider;
+                    const refreshToken = token.refreshToken as string;
+                    const expiresAt = new Date(Date.now()+10000000);
+                    memberService.createMember({ id, provider, refreshToken, expiresAt });
+                }
                 return token;
             }
             
@@ -81,11 +88,12 @@ export const authOptions: NextAuthOptions = {
                 session.user.id = token.user.id;
                 session.user.email = token.user.email;
                 session.accessToken = token.accessToken as string;
+                session.isNewUser = token.isNewUser as boolean; // 신규 사용자 여부 전달
+                session.isInited = token.isInited as boolean; // 온보딩 여부 전달
             }
             
             return session;
-        }
-        
+        },
     },
     secret : process.env.SECRET_KEY
 };
