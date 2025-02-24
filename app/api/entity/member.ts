@@ -23,9 +23,9 @@ export class Member {
   @Column({ name: 'is_inited' })
   isInited?: boolean;
   
-  @OneToMany(() => MemberTitle, (memberTitle) => memberTitle.member)
-  memberTitles?: MemberTitle;
+  @OneToMany('MemberTitle', 'Member', { lazy: true })
+  memberTitles?: Promise<MemberTitle[]>;
   
-  @OneToMany(() => Membership, (membership) => membership.member)
-  memberships?: Membership;
+  @OneToMany('Membership', 'Member', { lazy: true })
+  memberships?: Promise<Membership[]>;
 }

@@ -12,6 +12,6 @@ export class Title {
   @Column()
   color?: string;
   
-  @OneToMany(() => MemberTitle, (memberTitle) => memberTitle.title)
-  memberTitles?: MemberTitle;
+  @OneToMany('MemberTitle', 'Title', { lazy: true })
+  memberTitles?: Promise<MemberTitle[]>;
 }

@@ -12,6 +12,6 @@ export class ProblemReviewImage {
  @Column()
  problem_review_id?: number;
 
- @ManyToOne(() => ProblemReview, review => review.images)
+ @ManyToOne('ProblemReview', 'ProblemReviewImage', { lazy: true })
  problemReview?: ProblemReview;
 }

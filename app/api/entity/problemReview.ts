@@ -35,12 +35,12 @@ export class ProblemReview {
  @UpdateDateColumn()
  updated_date?: Date;
 
- @OneToMany(() => ProblemReviewImage, image => image.problemReview)
+ @OneToMany('ProblemReviewImage', 'ProblemReview', { lazy: true })
  images?: ProblemReviewImage[];
 
- @ManyToOne(() => Member)
+ @ManyToOne('Member', 'ProblemReview', { lazy: true })
  member?: Member;
 
- @ManyToOne(() => Center)
+ @ManyToOne('Center', 'ProblemReview', { lazy: true })
  center?: Center;
 }

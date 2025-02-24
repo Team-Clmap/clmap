@@ -11,10 +11,10 @@ export class Membership {
   @Column()
   type?: string;
   
-  @ManyToOne(() => Member, (member) => member.memberships)
+  @ManyToOne('Member', 'Membership', { lazy: true })
   member?: Member;
   
-  @ManyToOne(() => Center, (center) => center.memberships)
+  @ManyToOne('Center', 'Membership', { lazy: true })
   center?: Center;
 
   @Column({ name: 'register_date' })

@@ -12,6 +12,6 @@ export class RecordImage {
  @Column()
  record_id?: number;
 
- @ManyToOne(() => Record, record => record.images)
+ @ManyToOne('Record', 'RecordImage', { lazy: true })
  record?: Record;
 }

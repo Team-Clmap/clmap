@@ -21,6 +21,6 @@ export class TryRecord {
  @Column()
  complete_count?: number;
 
- @ManyToOne(() => Record, record => record.tryRecords)
+ @ManyToOne('Record', 'TryRecord', { lazy: true })
  record?: Record;
 }

@@ -35,13 +35,14 @@
     "**/*.tsx",
     "next-env.d.ts",
     ".next/types/**/*.ts"
-  ],
+, "src/database/migrations/1740397677865-Migration.js"  ],
   "exclude": [
     "node_modules"
   ],
-  "ts-node": { // typeorm 사용시에만 CommonJS 형식 사용
+  "ts-node": {
+    "require": ["tsconfig-paths/register"],
     "compilerOptions": {
-      "module": "CommonJS",
+      "module": "CommonJS"  // TypeORM CLI를 위한 별도 설정
     }
   }
 }

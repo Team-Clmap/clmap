@@ -16,9 +16,9 @@ export class Visit {
  @Column('datetime')
  start_time?: Date;
 
- @ManyToOne(() => Member)
+ @ManyToOne('Member', 'Visit', { lazy: true })
  member?: Member;
 
- @ManyToOne(() => Center)
+ @ManyToOne('Center', 'Visit', { lazy: true })
  center?: Center;
 }

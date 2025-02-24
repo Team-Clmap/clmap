@@ -11,9 +11,9 @@ export class MemberTitle {
   visible?: number;
 
   
-  @ManyToOne(() => Member, (member) => member.memberTitles)
-  member?: Member;
+  @ManyToOne('Member', 'MemberTitles', { lazy: true })
+  member?: Promise<Member>;
 
-  @ManyToOne(() => Title, (title) => title.memberTitles)
-  title?: Title;
+  @ManyToOne('Title', 'MemberTitles', { lazy: true })
+  title?: Promise<Title>;
 }

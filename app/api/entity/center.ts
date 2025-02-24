@@ -39,6 +39,6 @@ export class Center {
   @Column({ name: 'problem_review_count' })
   problem_review_count?: string;
 
-  @OneToMany(() => Membership, (membership) => membership.center)
-  memberships?: Membership;
+  @OneToMany('Membership', 'Center', { lazy: true })
+  memberships?: Membership[];
 }

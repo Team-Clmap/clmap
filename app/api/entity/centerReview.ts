@@ -23,7 +23,7 @@ export class CenterReview {
   @UpdateDateColumn()
   updated_date?: Date;
 
-  @OneToMany(() => CenterReviewImage, image => image.centerReview)
+  @OneToMany('CenterReviewImage', 'CenterReview', { lazy: true })
   images?: CenterReviewImage[];
 
   @ManyToOne(() => Member)

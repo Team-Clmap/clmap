@@ -30,15 +30,15 @@ export class Record {
  @UpdateDateColumn()
  updated_date?: Date;
 
- @OneToMany(() => RecordImage, image => image.record)
+ @OneToMany('RecordImage', 'Record', { lazy: true })
  images?: RecordImage[];
 
- @OneToMany(() => TryRecord, tryRecord => tryRecord.record)
+ @OneToMany('TryRecord', 'Record', { lazy: true })
  tryRecords?: TryRecord[];
 
- @ManyToOne(() => Member)
+ @ManyToOne('Member', 'Record', { lazy: true })
  member?: Member;
 
- @ManyToOne(() => Center)
+ @ManyToOne('Center', 'Record', { lazy: true })
  center?: Center;
 }
