@@ -69,7 +69,8 @@ const Button = ({
     align-items: center;
     justify-content: center;
     gap: 4px;
-    position: relative;
+    position: fixed;
+    bottom: 24px;
     cursor: ${isActive ? "pointer" : "auto"};
   `;
 
