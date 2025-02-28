@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { MemberService } from "./service";
+import { MemberService } from "../service/MemberService";
 import { getServerSession } from "next-auth/next";
 import {authOptions} from "../auth/[...nextauth]/route";
 import withErrorHandler from '@/utils/server-exception';

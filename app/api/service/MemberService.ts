@@ -1,10 +1,10 @@
 import { Profile } from "@/app/api/entity/profile";
-import { CreateMemberParams, MemberRepository } from "./repository";
-import { GetMemberProfileResponse } from "./me/dto";
-import { Nickname } from "./nickname/route";
+import { CreateMemberParams, MemberRepository } from "../repository/MemberRepository";
+import { GetMemberProfileResponse } from "../members/me/dto";
+import { Nickname } from "../members/nickname/route";
 import { formatDate, minuteToTime } from "@/utils/convert-format";
-import { CreateInitInfoRequest } from "./init-info/route";
-import { UpdateMemberProfileRequest } from "./profile/dto";
+import { CreateInitInfoRequest } from "../members/init-info/route";
+import { UpdateMemberProfileRequest } from "../members/profile/dto";
 import { Member } from "../entity/member";
 
 import axios from "axios";
@@ -41,12 +41,16 @@ export class MemberService {
         return await this.memberRepository.existMemberNickname(nickname);
     }
 
-    // 회원 생성
+    /**
+     * member 객체 생성, profile 객체 생성
+     * @param CreateMemberParams : id, provider, refreshToken, expiresAt 파라미터를 회원가입 시에 획득
+     */
     public async createMember({ id, provider, refreshToken, expiresAt }: CreateMemberParams): Promise<void> {
         try {
             const exists = await this.isMemberExist(id);
             if (!exists) {
                 await this.memberRepository.createMember({ id, provider, refreshToken, expiresAt });
+                await this.memberRepository.createMemberInitInfo({ id });
             } else {
                 console.warn(`이미 존재함`);
             }
@@ -117,6 +121,23 @@ export class MemberService {
         return response;
     }
     
+    /*
+     * 초기 회원 닉네임 생성
+     */
+    public async createMemberInitNickname(dto: Nickname, id: User["id"]): Promise<void> {
+        const exists = await this.isMemberExist(id);
+        if (!exists) {
+            throw new Error(`멤버 id가 존재하지 않음`);
+        }
+
+        const { nickname } = dto;
+        
+        const profileEntity = await this.memberRepository.getMemberProfile(id);
+        if (profileEntity != null) {
+            profileEntity.nickname = nickname;
+            await this.memberRepository.updateMemberProfile(profileEntity);
+        }
+    }
     // 초기 회원 정보 생성
     public async createMemberInitInfo(dto: CreateInitInfoRequest, id: User["id"]): Promise<void> {
         const exists = await this.isMemberExist(id);
@@ -124,21 +145,20 @@ export class MemberService {
             throw new Error(`멤버 id가 존재하지 않음`);
         }
 
-        const { nickname, crewName, climbingStartDate, userInstagramId } = dto;
+        const {  crewName, climbingStartDate, userInstagramId } = dto;
         const image = ""; // 기본값 설정
 
         // TODO: 이미지 업로드 로직 추가
         // const uploadedImage = await this.uploadImage(dto.imageFile);
             
-        const profileEntity = new Profile();
-        profileEntity.id = id;
-        profileEntity.nickname = nickname;
-        profileEntity.crewName = crewName;
-        profileEntity.climbingStartDate = climbingStartDate;
-        profileEntity.instagramId = userInstagramId;
-        profileEntity.image = image;
-
-        await this.memberRepository.createMemberInitInfo(profileEntity);
+        const profileEntity = await this.memberRepository.getMemberProfile(id);
+        if (profileEntity != null) {
+            profileEntity.crewName = crewName;
+            profileEntity.climbingStartDate = climbingStartDate;
+            profileEntity.instagramId = userInstagramId;
+            profileEntity.image = image;
+            await this.memberRepository.updateMemberProfile(profileEntity);
+        }
     }
     
     public async updateMemberProfile(dto: UpdateMemberProfileRequest, id: User["id"]): Promise<void> {
