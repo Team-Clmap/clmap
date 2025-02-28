@@ -23,7 +23,7 @@ const InformationPage = ({}: InformationPageProps) => {
         <br />
         프로필 생성을 위해
         <br />
-        간단한 정보를 입력해 주세요. <div css={requiredStyle}>*필수항목</div>
+        간단한 정보를 입력해 주세요. <div css={requiredStyle}>*필수</div>
       </div>
       <div css={questionBoxStyle}>
         <div css={questionStyle}>
