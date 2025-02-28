@@ -35,11 +35,11 @@ const checkboxStyle = (id: ClimbingType, checked: boolean) => css`
   }
 `;
 
-const ClimbingTypeCheckbox: React.FC<ClimbingTypeCheckboxProps> = ({
+const ClimbingTypeCheckbox = ({
   id,
   checked,
   onChange,
-}) => {
+}: ClimbingTypeCheckboxProps) => {
   const handleChange = () => onChange(id, !checked);
 
   return (

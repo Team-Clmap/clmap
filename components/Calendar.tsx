@@ -9,7 +9,7 @@ type CalendarProps = {
   onDateSelect: (date: string) => void;
 };
 
-const Calendar: React.FC<CalendarProps> = ({ onDateSelect }) => {
+const Calendar = ({ onDateSelect }: CalendarProps) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [year, setYear] = useState(currentDate.getFullYear());
   const [month, setMonth] = useState(currentDate.getMonth());

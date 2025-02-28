@@ -1,4 +1,4 @@
-import { getDataSource } from "@/utils/db";
+import getDataSource from "@/utils/database/getDataSource";
 import { Profile } from "../entity/profile";
 import { Member } from "../entity/member";
 import 'reflect-metadata';
