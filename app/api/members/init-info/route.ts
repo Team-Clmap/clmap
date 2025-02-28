@@ -1,10 +1,9 @@
 import { NextRequest } from "next/server";
-import { MemberService } from "../service";
+import { MemberService } from "../../service/MemberService";
 import { getServerSession } from "next-auth/next";
 import {authOptions} from "../../auth/[...nextauth]/route";
 
 export interface CreateInitInfoRequest {
-    nickname: string;
     climbingStartDate?: Date;
     userInstagramId?: string;
     crewName?: string;
@@ -22,9 +21,6 @@ export interface CreateInitInfoRequest {
  *           schema:
  *             type: object
  *             properties:
- *               nickname:
- *                 type: string
- *                 example: "포근한귀리"
  *               climbingStartDate:
  *                 type: string
  *                 format: date
