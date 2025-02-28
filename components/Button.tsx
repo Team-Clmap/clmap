@@ -69,7 +69,8 @@ const Button: React.FC<ButtonProps> = ({
     align-items: center;
     justify-content: center;
     gap: 4px;
-    position: relative;
+    position: fixed;
+    bottom: 24px;
   `;
 
   const iconStyle = css`
