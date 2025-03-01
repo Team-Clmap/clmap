@@ -43,11 +43,32 @@ export const GET = withErrorHandler(async function(request: NextRequest):Promise
 /**
  * @swagger
  * /api/members/nickname:
- *   get:
+ *   post:
  *     description: 닉네임 확정
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nickname:
+ *                 type: string
+ *                 description: 사용자 닉네임
+ *             required:
+ *               - nickname
  *     responses:
  *       200:
  *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
  */
 export const POST = withErrorHandler(async function(request: NextRequest) {
     const memberService = MemberService.getInstance();

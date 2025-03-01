@@ -201,7 +201,7 @@ export class MemberService {
             kakao: "https://kapi.kakao.com/v1/user/unlink"
         }
         
-        let data;
+        let data: Record<string, string> = {}; // Initialize data as empty object
         let headers: Record<string, string> = {};
         let provider: string | null = null;
         
@@ -226,7 +226,7 @@ export class MemberService {
                     headers["Authorization"] = `Bearer ${session.accessToken}`;
                     break;
             }
-            
+            console.log(headers);
             if (provider) {
                 await axios.post(revokeUrls[provider], new URLSearchParams(data).toString(), { headers });
             }
