@@ -1,11 +1,11 @@
-import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Member } from './member';
 import { Title } from './title';
 
 @Entity({name:'member_title'})
 export class MemberTitle {
-  @PrimaryColumn()
-  id?: string;
+  @PrimaryGeneratedColumn('increment')
+  id?: number;
 
   @Column({ name: 'visible' })
   visible?: number;

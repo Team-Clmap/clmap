@@ -6,7 +6,7 @@ import { Membership } from './membership';
 @Entity({name:'member'})
 export class Member {
   @PrimaryColumn()
-  id?: string;
+  id?: number;
 
   @Column()
   email?: string;
