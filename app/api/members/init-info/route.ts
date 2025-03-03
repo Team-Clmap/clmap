@@ -1,10 +1,9 @@
 import { NextRequest } from "next/server";
-import { MemberService } from "../service";
+import { MemberService } from "../../service/MemberService";
 import { getServerSession } from "next-auth/next";
 import {authOptions} from "../../auth/[...nextauth]/route";
 
 export interface CreateInitInfoRequest {
-    nickname: string;
     climbingStartDate?: Date;
     userInstagramId?: string;
     crewName?: string;
@@ -22,9 +21,6 @@ export interface CreateInitInfoRequest {
  *           schema:
  *             type: object
  *             properties:
- *               nickname:
- *                 type: string
- *                 example: "포근한귀리"
  *               climbingStartDate:
  *                 type: string
  *                 format: date
@@ -37,21 +33,27 @@ export interface CreateInitInfoRequest {
  *                 example: "포근클라이밍"
  *               profileImage:
  *                 type: string
- *                 format: uri
- *                 example: "https://example.com/images/profile.jpg"
+ *                 format: binary
  *             required:
- *               - nickname
  *               - climbingStartDate
  */
-
 export async function POST(request: NextRequest) {
     const memberService = MemberService.getInstance();
     const session = await getServerSession(authOptions);
-    const data:CreateInitInfoRequest = await request.json();
+    const formData = await request.formData();
+    const climbingStartDate = formData.get('climbingStartDate') as string;
+    const data: CreateInitInfoRequest = {
+        climbingStartDate: new Date(climbingStartDate.replace(/\./g, '-')),
+        userInstagramId: formData.get('userInstagramId') as string,
+        crewName: formData.get('crewName') as string,
+        profileImage: formData.get('profileImage') as File
+    };
+    
     if (session) {
         console.log(session, data)
         const result = await memberService.createMemberInitInfo(data, session.user.id);
     }
+    
     //응답 body 생성
     const responseBody = {
         status: 200,
