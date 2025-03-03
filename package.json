@@ -30,7 +30,7 @@
     "typescript": "^5.7.2"
   },
   "scripts": {
-    "dev": "rimraf .next && next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

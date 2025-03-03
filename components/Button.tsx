@@ -10,6 +10,7 @@ type ButtonProps = {
   width?: "whole" | "half" | "auto";
   isActive?: boolean;
   iconName?: string;
+  fixed?: boolean;
 };
 
 const Button = ({
@@ -19,6 +20,7 @@ const Button = ({
   width = "whole",
   isActive = true,
   iconName,
+  fixed = false,
 }: ButtonProps) => {
   const colorStyles = {
     main: {
@@ -69,8 +71,8 @@ const Button = ({
     align-items: center;
     justify-content: center;
     gap: 4px;
-    position: fixed;
-    bottom: 24px;
+    position: ${fixed ? "fixed" : "relative"};
+    bottom: ${fixed ? "24px" : "auto"};
     cursor: ${isActive ? "pointer" : "auto"};
   `;
 

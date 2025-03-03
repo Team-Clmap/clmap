@@ -2,15 +2,17 @@
 
 "use client";
 
-import { SessionProvider, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Button from "@/components/Button";
 import DatePicker from "@/components/DatePicker";
 import Input from "@/components/Input";
 import Toast from "@/components/Toast";
 import { css } from "@emotion/react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const InformationPage = () => {
+  const router = useRouter();
   const { data: session } = useSession();
 
   const [startDate, setStartDate] = useState("");
@@ -51,7 +53,7 @@ const InformationPage = () => {
     profileImage && formData.append("profileImage", profileImage);
 
     try {
-      const response = await fetch("/api/user/profile", {
+      const response = await fetch("/api/members/init-info", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
@@ -63,10 +65,11 @@ const InformationPage = () => {
         throw new Error("프로필 생성 실패");
       }
 
-      alert("프로필 생성 완료");
+      setToastMessage("프로필이 생성되었어요.");
+      router.push("/map");
     } catch (error) {
       console.error("에러 발생: ", error);
-      alert("프로필 생성 중 오류 발생");
+      setToastMessage("프로필 생성 중 문제가 생겼어요.");
     }
   };
 
@@ -122,6 +125,7 @@ const InformationPage = () => {
           buttonName="클맵 시작하기"
           onClick={handleSubmit}
           isActive
+          fixed
         />
       </div>
       {toastMessage && (
