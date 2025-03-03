@@ -2,7 +2,7 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import KakaoProvider from "next-auth/providers/kakao";
 import GoogleProvider from "next-auth/providers/google";
 import NaverProvider from "next-auth/providers/naver";
-import { MemberService } from "../../members/service";
+import { MemberService } from "../../service/MemberService";
 
 import type { JWT } from "next-auth/jwt";
 import type { Account, User, Session } from "next-auth";
