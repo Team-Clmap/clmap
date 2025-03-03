@@ -1,10 +1,10 @@
-import { Entity, Column, PrimaryColumn, OneToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinTable } from 'typeorm';
 import { MemberTitle } from './memberTitle';
 
 @Entity({name:'title'})
 export class Title {
-  @PrimaryColumn()
-  id?: string;
+  @PrimaryGeneratedColumn('increment')
+  id?: number;
 
   @Column()
   name?: string;

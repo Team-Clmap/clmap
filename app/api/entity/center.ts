@@ -1,10 +1,10 @@
-import { Entity, Column, PrimaryColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Membership } from './membership';
 // Member 테이블과 연동된 Entity
 @Entity({name:'center'})
 export class Center {
-  @PrimaryColumn()
-  id?: string;
+  @PrimaryGeneratedColumn('increment')
+  id?: number;
 
   @Column()
   name?: string;
@@ -37,7 +37,7 @@ export class Center {
   center_review_count?: number;
   
   @Column({ name: 'problem_review_count' })
-  problem_review_count?: string;
+  problem_review_count?: number;
 
   @OneToMany('Membership', 'Center', { lazy: true })
   memberships?: Membership[];
