@@ -1,12 +1,12 @@
-import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Member } from './member';
 import { Center } from './center';
 
 // Member 테이블과 연동된 Entity
 @Entity({name:'membership'})
 export class Membership {
-  @PrimaryColumn()
-  id?: string;
+  @PrimaryGeneratedColumn('increment')
+  id?: number;
 
   @Column()
   type?: string;
