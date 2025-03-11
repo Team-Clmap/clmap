@@ -18,8 +18,7 @@ const CreateNicknamePage = () => {
     setMaking(true);
     try {
       const response = await fetch("/api/members/nickname");
-      if (!response.ok) throw new Error("닉네임");
-
+      if (!response.ok) throw new Error();
       const data = await response.json();
       setNickname(data.data.nickname);
     } catch (error) {

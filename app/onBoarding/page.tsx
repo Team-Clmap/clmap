@@ -12,14 +12,17 @@ const OnBoardingPage = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
 
+  // [TODO] status 가져오는 도중 소셜로그인 버튼 클릭 시 닉네임 화면 반복 이동 이슈 해결
+  // [TODO] 온보딩 후에도 isInited: false로 잡히는 이슈 해결
   useEffect(() => {
+    if (status === "loading") return;
     if (status === "authenticated" && session) {
       if (session.isNewUser || !session.isInited) {
         // 로그인O & 온보딩X: 온보딩(닉네임) 화면으로 이동
-        router.push("/onBoarding/nickname");
+        router.replace("/onBoarding/nickname");
       } else {
         // 로그인O & 온보딩O: 지도탭으로 이동
-        router.push("/map");
+        router.replace("/map");
       }
     }
   }, [session, status]);
