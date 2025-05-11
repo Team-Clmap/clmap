@@ -158,6 +158,7 @@ export class MemberService {
             profileEntity.instagramId = userInstagramId;
             profileEntity.image = image;
             await this.memberRepository.updateMemberProfile(profileEntity);
+            await this.memberRepository.updateInited(id);
         }
     }
     

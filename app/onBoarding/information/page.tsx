@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 
 const InformationPage = () => {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
 
   const [startDate, setStartDate] = useState("");
   const [instagramId, setInstagramId] = useState("");
@@ -53,12 +53,12 @@ const InformationPage = () => {
         },
         body: formData,
       });
-
       if (!response.ok) {
         throw new Error("프로필 생성 실패");
       }
       setToastType("confirm");
       setToastMessage("프로필이 생성되었어요.");
+      await update();
       router.replace("/map");
     } catch (error) {
       console.error("에러 발생: ", error);
