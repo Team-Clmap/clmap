@@ -11,10 +11,8 @@ import { useEffect, useState } from "react";
 const OnBoardingPage = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const [clickable, setClickable] = useState(false);
 
   useEffect(() => {
-    console.log(session);
     if (status === "loading") return;
     if (status === "authenticated") {
       if (status === "authenticated" && session) {
@@ -26,9 +24,12 @@ const OnBoardingPage = () => {
           router.replace("/map");
         }
       }
-      setClickable(true);
     }
   }, [session, status]);
+
+  useEffect(() => {
+    console.log(session);
+  });
 
   return (
     <div css={pageStyle}>
@@ -44,26 +45,22 @@ const OnBoardingPage = () => {
           type="kakao"
           buttonName="카카오 로그인"
           onClick={() => signIn("kakao")}
-          isActive={clickable}
         />
         <Button
           type="naver"
           buttonName="네이버 로그인"
           onClick={() => signIn("naver")}
-          isActive={clickable}
         />
         <Button
           type="google"
           buttonName="구글 로그인"
           onClick={() => signIn("google")}
-          isActive={clickable}
         />
         <div css={textWithLineStyle}>또는</div>
         <Button
           type="sub"
           buttonName="비회원으로 시작하기"
           onClick={() => router.push("/map")}
-          isActive={clickable}
         />
       </div>
     </div>
