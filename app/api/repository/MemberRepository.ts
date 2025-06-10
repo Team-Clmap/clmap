@@ -75,6 +75,14 @@ export class MemberRepository {
         })
     }
     
+    async updateInited(id: string) {
+        const dataSource = await getDataSource();
+        const memberRepo = dataSource.getRepository(Member);;
+        memberRepo.update({id: id}, {
+            isInited: true            
+        })
+    }
+    
     async getMember(id: string): Promise<Member | null> {
         const dataSource = await getDataSource();
         const memberRepo = dataSource.getRepository(Member);

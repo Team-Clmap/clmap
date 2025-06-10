@@ -3,6 +3,7 @@
 import "../styles/global.css";
 import localFont from "next/font/local";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { SessionProvider } from "next-auth/react";
 import { queryClient } from "../utils/react-query-client";
 import { ReactNode } from "react";
 
@@ -38,13 +39,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <title>Clmap</title>
       <body className={nanumsquare.className}>
-      {/* <body > */}
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
         <QueryClientProvider client={queryClient}>
-          {children}
+          <SessionProvider>{children}</SessionProvider>
         </QueryClientProvider>
       </body>
     </html>

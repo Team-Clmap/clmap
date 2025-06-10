@@ -13,6 +13,8 @@ type JwtCallbackParams = {
     token: JWT;
     account?: Account | null;
     user: User;
+    trigger?: "signIn" | "signUp" | "update" | "session";
+    session?: Session;
 };
 
 type SessionCallbackParams = {
@@ -45,12 +47,11 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
     callbacks: {
-        async jwt({ token, account, user }: JwtCallbackParams): Promise<JWT> {
-            if (account && user) {
+        async jwt({ token, account, trigger, session, user }: JwtCallbackParams): Promise<JWT> {
+            if ((account && user)) {
                 const existingUser = await memberService.getMemberById(user.id);
                 const isNewUser: boolean = !existingUser;
                 const isInited: boolean = existingUser ? existingUser.isInited as boolean:false;
-                
                 // 초기 로그인 시 새로운 토큰 생성 + db 저장
                 token = {
                     ...token,
@@ -58,7 +59,6 @@ export const authOptions: NextAuthOptions = {
                     accessTokenExpires: Date.now() + 3000,
                     refreshToken: account.refresh_token,
                     user: user,
-                    isNewUser: isNewUser,
                     isInited: isInited
                 };
                 
@@ -72,12 +72,24 @@ export const authOptions: NextAuthOptions = {
                 }
                 return token;
             }
-            
+            if (trigger === "update") {
+                // 사용자 정보 업데이트
+                const existingUser = await memberService.getMemberById(user.id);
+                const isInited: boolean = existingUser ? existingUser.isInited as boolean:false;
+
+                token = {
+                    ...token,
+                    user: user,
+                    isInited: isInited
+                };
+                
+                return token;
+            }
             // 만료되지 않은 경우 기존 토큰 반환
             if (Date.now() < (token.accessTokenExpires as number)) {
                 return token;
             }
-
+            
             return token;
         },
         
@@ -88,10 +100,8 @@ export const authOptions: NextAuthOptions = {
                 session.user.id = token.user.id;
                 session.user.email = token.user.email;
                 session.accessToken = token.accessToken as string;
-                session.isNewUser = token.isNewUser as boolean; // 신규 사용자 여부 전달
                 session.isInited = token.isInited as boolean; // 온보딩 여부 전달
             }
-            
             return session;
         },
     },

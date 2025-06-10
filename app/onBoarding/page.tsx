@@ -2,15 +2,34 @@
 
 "use client";
 
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Button from "@/components/Button";
 import { css } from "@emotion/react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-type OnBoardingPageProps = {};
-
-const OnBoardingPage = (OnBoardingPageProps: OnBoardingPageProps) => {
+const OnBoardingPage = () => {
   const router = useRouter();
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === "loading") return;
+    if (status === "authenticated") {
+      if (status === "authenticated" && session) {
+        if (session.isInited === false) {
+          // 로그인O & 온보딩X: 온보딩(닉네임) 화면으로 이동
+          router.replace("/onBoarding/nickname");
+        } else if (session.isInited === true) {
+          // 로그인O & 온보딩O: 지도탭으로 이동
+          router.replace("/map");
+        }
+      }
+    }
+  }, [session, status]);
+
+  useEffect(() => {
+    console.log(session);
+  });
 
   return (
     <div css={pageStyle}>
@@ -64,7 +83,7 @@ const pageStyle = css`
 
 const headerStyle = css`
   ${columnStyle};
-  gap: 60px;
+  gap: 30px;
   margin-top: 80px;
 `;
 

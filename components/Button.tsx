@@ -10,6 +10,7 @@ type ButtonProps = {
   width?: "whole" | "half" | "auto";
   isActive?: boolean;
   iconName?: string;
+  fixed?: boolean;
 };
 
 const Button = ({
@@ -19,6 +20,7 @@ const Button = ({
   width = "whole",
   isActive = true,
   iconName,
+  fixed = false,
 }: ButtonProps) => {
   const colorStyles = {
     main: {
@@ -69,7 +71,8 @@ const Button = ({
     align-items: center;
     justify-content: center;
     gap: 4px;
-    position: relative;
+    position: ${fixed ? "fixed" : "relative"};
+    bottom: ${fixed ? "24px" : "auto"};
     cursor: ${isActive ? "pointer" : "auto"};
   `;
 
@@ -80,20 +83,15 @@ const Button = ({
   `;
 
   const renderIcon = () => {
-    if (type === "icon" && iconName) {
+    if (type === "icon" && iconName)
       return <img src={`/icons/${iconName}.png`} css={iconStyle} />;
-    }
-    if (type === "kakao")
-      return <img src="/icons/kakao-logo.png" css={iconStyle} />;
-    if (type === "naver")
-      return <img src="/icons/naver-logo.png" css={iconStyle} />;
-    if (type === "google")
-      return <img src="/icons/google-logo.png" css={iconStyle} />;
+    if (type === "kakao" || type === "naver" || type === "google")
+      return <img src={`/icons/${type}-logo.png`} css={iconStyle} />;
     return null;
   };
 
   return (
-    <button css={buttonStyle} onClick={onClick}>
+    <button css={buttonStyle} onClick={onClick} disabled={!isActive}>
       {renderIcon()}
       {buttonName}
     </button>
